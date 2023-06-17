@@ -78,7 +78,7 @@ function App() {
                 variant="unstyled"
                 tagVariant="subtle"
                 placeholder="Select some cuisines?"
-                colorScheme="green"
+                colorScheme="orange"
                 closeMenuOnSelect={false}
                 options={selectOptionMapper(options.preferredCuisines)}
               />
@@ -91,7 +91,7 @@ function App() {
                 variant="unstyled"
                 tagVariant="subtle"
                 placeholder="Select some materials?"
-                colorScheme="red"
+                colorScheme="orange"
                 closeMenuOnSelect={false}
                 options={selectOptionMapper(options.preferredMaterials)}
               />
@@ -101,21 +101,21 @@ function App() {
               <FormLabel>How spicy you would like?</FormLabel>
               <HStack paddingBottom={3}>
                 {options.spicyLevels.map((spicyLevel) => (
-                  <Tag key={spicyLevel} colorScheme="red">
+                  <Tag key={spicyLevel} colorScheme="orange">
                     <TagLabel>{spicyLevel}</TagLabel>
                   </Tag>
                 ))}
               </HStack>
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>What are your preferred styles?</FormLabel>
               <Select
                 isMulti
                 variant="unstyled"
                 tagVariant="subtle"
                 placeholder="Select some styles?"
-                colorScheme="green"
+                colorScheme="orange"
                 closeMenuOnSelect={false}
                 options={selectOptionMapper(options.preferredStyle)}
               />
@@ -128,8 +128,8 @@ function App() {
             <option value="option3">Option 3</option> */}
 
         {/* <RangeSlider defaultValue={[120, 240]} min={0} max={300} step={1} onChangeEnd={(val) => console.log(val)}>
-            <RangeSliderTrack bg="green.100">
-              <RangeSliderFilledTrack bg="green" />
+            <RangeSliderTrack bg="orange.100">
+              <RangeSliderFilledTrack bg="orange" />
             </RangeSliderTrack>
             <RangeSliderThumb boxSize={3} index={0} />
             <RangeSliderThumb boxSize={3} index={1} />
