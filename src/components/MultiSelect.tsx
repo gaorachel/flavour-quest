@@ -5,11 +5,11 @@ import type { Options } from "../type";
 
 interface MultiSelectProps {
   formLabel: string;
-  placeholder: string;
   optionArr: string[];
+  placeholder?: string;
 }
 
-export function MultiSelect({ formLabel, placeholder, optionArr }: MultiSelectProps) {
+export function MultiSelect({ formLabel, optionArr, placeholder = "Select" }: MultiSelectProps) {
   const selectOptionMapper = (optionArr: string[]) => {
     return optionArr.map((option) => {
       return {
