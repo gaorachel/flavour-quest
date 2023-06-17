@@ -8,11 +8,12 @@ import {
   Heading,
   Tag,
   TagLabel,
-  withDefaultVariant,
+  Progress,
+  Text,
+  Flex,
 } from "@chakra-ui/react";
-import { AsyncCreatableSelect, AsyncSelect, CreatableSelect, Select } from "chakra-react-select";
+import { Select } from "chakra-react-select";
 import { options } from "./data/questOptions";
-import "./App.css";
 
 import type { Options } from "./type";
 
@@ -60,6 +61,13 @@ function App() {
       >
         <Form>
           <Container mb={16}>
+            <Progress value={80} size="xs" colorScheme="orange" />
+            <Flex flexDirection={"row-reverse"}>
+              <Text as="sub" fontSize="sm" color="tomato">
+                Completed 12/20
+              </Text>
+            </Flex>
+
             <Heading paddingY={5} size="xl">
               Quests....
             </Heading>
