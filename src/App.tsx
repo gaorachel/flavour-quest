@@ -14,48 +14,7 @@ import { AsyncCreatableSelect, AsyncSelect, CreatableSelect, Select } from "chak
 import { options } from "./data/questOptions";
 import "./App.css";
 
-interface Answers {
-  preferredCuisines: string[];
-  preferredFlavours: string[];
-  spicyLevel: string[];
-  preferredMaterials: string[]; //"meat or poultry" | "fish or seafood" | "flexitarian" | "pescatarian" | "acto-ovo " | "vegetarian" | "vegan";
-  preferredIngredients: string[]; // cumin
-  dietaryRestrictions: string[];
-  specificGoals: string[];
-  mealSize: "little" | "small" | "regular" | "large" | "super large";
-  mealtime: string[];
-  cookingTime: [min: number, max: number];
-  servingSize: [min: number, max: number];
-  cookingFacilities: string[];
-  specificCookingTechniques: string[];
-  specificTextures: string[]; // creamy or crunchy
-  budget: {
-    unit: "per person" | "per meal";
-    cost: [min: number, max: number];
-    currency: string;
-  };
-}
-
-// {
-//   preferredCuisines: [],
-//   preferredFlavours: [],
-//   spicyLevel: [],
-//   preferredMaterials: [],
-//   preferredIngredients: [],
-//   dietaryRestrictions: [],
-//   specificGoals: [],
-//   mealSize: "regular",
-//   mealtime: [],
-//   cookingTime: [],
-//   servingSize: [],
-//   cookingFacilities: [],
-//   specificCookingTechniques: [],
-//   specificTextures: [], // creamy or crunchy
-//   budget: {
-//     unit: "per person",
-//     cost: [],
-//   }
-// }
+import type { Options } from "./type";
 
 function App() {
   const selectOptionMapper = (optionArr: string[]) => {
@@ -76,7 +35,8 @@ function App() {
         initialValues={{
           preferredCuisines: [],
           preferredFlavours: [],
-          spicyLevel: [],
+          spicyLevels: [],
+          preferredStyle: [],
           preferredMaterials: [],
           preferredIngredients: [],
           dietaryRestrictions: [],
@@ -154,6 +114,20 @@ function App() {
             </FormControl>
           </Container>
         </Form>
+
+        {/* <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option> */}
+
+        {/* <RangeSlider defaultValue={[120, 240]} min={0} max={300} step={1} onChangeEnd={(val) => console.log(val)}>
+            <RangeSliderTrack bg="green.100">
+              <RangeSliderFilledTrack bg="green" />
+            </RangeSliderTrack>
+            <RangeSliderThumb boxSize={3} index={0} />
+            <RangeSliderThumb boxSize={3} index={1} />
+          </RangeSlider> */}
+
+        {/* <button type="submit"> submit</button> */}
       </Formik>
     </>
   );

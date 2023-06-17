@@ -12,7 +12,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider>
       <App />
-      <div> xxxx</div>
       <ToastContainer />
     </ChakraProvider>
   </React.StrictMode>
