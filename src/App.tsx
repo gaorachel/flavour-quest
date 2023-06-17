@@ -60,9 +60,9 @@ function App() {
         }}
       >
         <Form>
-          <Container mb={16}>
-            <Progress value={80} size="xs" colorScheme="orange" />
-            <Flex flexDirection={"row-reverse"}>
+          <Flex position="fixed" width="100vw">
+            <Progress value={80} size="xs" colorScheme="orange" width="100vw" />
+            <Flex flexDirection={"row-reverse"} width="100vw" padding={2}>
               <Text as="sub" fontSize="sm" color="tomato">
                 Completed 12/20
               </Text>
