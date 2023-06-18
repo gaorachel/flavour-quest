@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { options } from "./data/questOptions";
+import { MultiSelect } from "./components/MultiSelect";
 
 import type { Options } from "./type";
 
@@ -67,35 +68,16 @@ function App() {
                 Completed 12/20
               </Text>
             </Flex>
+          </Flex>
 
+          <Container mb={16}>
             <Heading paddingY={5} size="xl">
               Quests....
             </Heading>
-            <FormControl>
-              <FormLabel>What are your preferred cuisines?</FormLabel>
-              <Select
-                isMulti
-                variant="unstyled"
-                tagVariant="subtle"
-                placeholder="Select some cuisines?"
-                colorScheme="orange"
-                closeMenuOnSelect={false}
-                options={selectOptionMapper(options.preferredCuisines)}
-              />
-            </FormControl>
 
-            <FormControl>
-              <FormLabel>What are your preferred materials?</FormLabel>
-              <Select
-                isMulti
-                variant="unstyled"
-                tagVariant="subtle"
-                placeholder="Select some materials?"
-                colorScheme="orange"
-                closeMenuOnSelect={false}
-                options={selectOptionMapper(options.preferredMaterials)}
-              />
-            </FormControl>
+            <MultiSelect formLabel="What are your preferred cuisines?" optionArr={options.preferredCuisines} />
+
+            <MultiSelect formLabel="What are your preferred flavours?" optionArr={options.preferredFlavours} />
 
             <FormControl>
               <FormLabel>How spicy you would like?</FormLabel>
@@ -108,17 +90,19 @@ function App() {
               </HStack>
             </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel>What are your preferred styles?</FormLabel>
-              <Select
-                isMulti
-                variant="unstyled"
-                tagVariant="subtle"
-                placeholder="Select some styles?"
-                colorScheme="orange"
-                closeMenuOnSelect={false}
-                options={selectOptionMapper(options.preferredStyle)}
-              />
+            <MultiSelect formLabel="What are your preferred styles?" optionArr={options.preferredStyle} />
+
+            <MultiSelect formLabel="What are your preferred ingredients?" optionArr={options.preferredIngredients} />
+
+            <MultiSelect
+              formLabel="Do you have any dietary restrictions or allergies??"
+              optionArr={options.dietaryRestrictions}
+            />
+
+            <MultiSelect
+              formLabel="Do you have any specific goals related to your meals??"
+              optionArr={options.specificGoals}
+            />
             </FormControl>
           </Container>
         </Form>
