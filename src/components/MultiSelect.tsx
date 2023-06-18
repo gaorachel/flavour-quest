@@ -1,8 +1,6 @@
 import { Flex, FormControl, FormLabel } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 
-import type { Options } from "../type";
-
 interface MultiSelectProps {
   formLabel: string;
   optionArr: string[];
