@@ -118,6 +118,21 @@ function App() {
             <RangeSliderThumb boxSize={3} index={0} />
             <RangeSliderThumb boxSize={3} index={1} />
           </RangeSlider> */}
+            <MultiSelect
+              formLabel="What cooking facilities do you have available?"
+              optionArr={options.cookingFacilities}
+            />
+
+            <MultiSelect
+              formLabel="Are there any specific cooking techniques you enjoy or prefer? "
+              optionArr={options.specificCookingTechniques}
+            />
+
+            <MultiSelect
+              formLabel="Are there any specific textures or consistencies you enjoy?"
+              optionArr={options.specificTextures}
+            />
+            <MultiSelect
 
         {/* <button type="submit"> submit</button> */}
       </Formik>
