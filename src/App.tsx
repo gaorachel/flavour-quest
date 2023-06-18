@@ -6,30 +6,25 @@ import {
   FormLabel,
   HStack,
   Heading,
-  Tag,
-  TagLabel,
   Progress,
   Text,
   Flex,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Button,
+  useToast,
+  Center,
 } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import { options } from "./data/questOptions";
 import { MultiSelect } from "./components/MultiSelect";
-
-import type { Options } from "./type";
+import { RangeSliderWithIndexValue } from "./components/RangeSliderWithIndexValue";
+import { ButtonGroup } from "./components/ButtonGroup";
 
 function App() {
-  const selectOptionMapper = (optionArr: string[]) => {
-    const selectOptionArr: object[] = [];
-
-    optionArr.map((option: string) =>
-      selectOptionArr.push({
-        label: option,
-        value: option,
-      })
-    );
-    return selectOptionArr;
-  };
+  const toast = useToast();
 
   return (
     <>
@@ -37,22 +32,22 @@ function App() {
         initialValues={{
           preferredCuisines: [],
           preferredFlavours: [],
-          spicyLevels: [],
+          spicyLevels: "",
           preferredStyle: [],
           preferredMaterials: [],
           preferredIngredients: [],
           dietaryRestrictions: [],
           specificGoals: [],
-          mealSize: "regular",
+          mealSize: "",
           mealtime: [],
-          cookingTime: [15, 30],
-          servingSize: [2, 3],
+          cookingTime: [],
+          servingSize: [],
           cookingFacilities: [],
           specificCookingTechniques: [],
-          specificTextures: [], // creamy or crunchy
+          specificTextures: [],
           budget: {
-            unit: "per person",
-            cost: [50, 100],
+            unit: [],
+            value: [],
             currency: "GBP",
           },
         }}
@@ -81,13 +76,7 @@ function App() {
 
             <FormControl>
               <FormLabel>How spicy you would like?</FormLabel>
-              <HStack paddingBottom={3}>
-                {options.spicyLevels.map((spicyLevel) => (
-                  <Tag key={spicyLevel} colorScheme="orange">
-                    <TagLabel>{spicyLevel}</TagLabel>
-                  </Tag>
-                ))}
-              </HStack>
+              <ButtonGroup optionArr={options.spicyLevels} defaultOption={options.spicyLevels[2]} borderRadius="full" />
             </FormControl>
 
             <MultiSelect formLabel="What are your preferred styles?" optionArr={options.preferredStyle} />
@@ -103,21 +92,50 @@ function App() {
               formLabel="Do you have any specific goals related to your meals??"
               optionArr={options.specificGoals}
             />
+
+            <FormControl>
+              <FormLabel>How many people will you be cooking for?</FormLabel>
+              <HStack justify="center" gap={5}>
+                <Flex align="center">
+                  <Text fontSize="md" paddingRight={1}>
+                    Min No.
+                  </Text>
+                  <NumberInput id="min-people-number" size="md" maxW={24} defaultValue={options.servingSize[0]} min={1}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Flex>
+
+                <Flex align="center">
+                  <Text fontSize="md" paddingRight={1}>
+                    Max No.
+                  </Text>
+                  <NumberInput id="max-people-number" size="md" maxW={24} defaultValue={options.servingSize[1]} min={1}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Flex>
+              </HStack>
             </FormControl>
-          </Container>
-        </Form>
 
-        {/* <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option> */}
+            <MultiSelect formLabel="What are your preferred meal time?" optionArr={options.mealtime} />
 
-        {/* <RangeSlider defaultValue={[120, 240]} min={0} max={300} step={1} onChangeEnd={(val) => console.log(val)}>
-            <RangeSliderTrack bg="orange.100">
-              <RangeSliderFilledTrack bg="orange" />
-            </RangeSliderTrack>
-            <RangeSliderThumb boxSize={3} index={0} />
-            <RangeSliderThumb boxSize={3} index={1} />
-          </RangeSlider> */}
+            <FormControl>
+              <FormLabel>How much time (minutes) would you prefer to spend on cooking/preparing the meal?</FormLabel>
+              <RangeSliderWithIndexValue defaultValue={options.cookingTime} min={0} max={120} />
+            </FormControl>
+
+            <FormControl paddingTop={5}>
+              <FormLabel>What are your preferred meal sizes?</FormLabel>
+              <ButtonGroup optionArr={options.mealSize} defaultOption={options.mealSize[2]} borderRadius="full" />
+            </FormControl>
+
             <MultiSelect
               formLabel="What cooking facilities do you have available?"
               optionArr={options.cookingFacilities}
@@ -132,9 +150,39 @@ function App() {
               formLabel="Are there any specific textures or consistencies you enjoy?"
               optionArr={options.specificTextures}
             />
-            <MultiSelect
 
-        {/* <button type="submit"> submit</button> */}
+            <FormControl>
+              <FormLabel>What is your budget?</FormLabel>
+              <HStack alignItems="center" justify="space-between" p={1}>
+                <ButtonGroup
+                  defaultOption={options.budget.currency[0]}
+                  optionArr={options.budget.currency}
+                  borderRadius="full"
+                />
+                <ButtonGroup optionArr={options.budget.unit} defaultOption={options.budget.unit[0]} space={0} />
+              </HStack>
+              <RangeSliderWithIndexValue defaultValue={options.budget.value} min={0} max={200} />
+            </FormControl>
+          </Container>
+
+          <Center>
+            <Button
+              w="570px"
+              bg="green.400"
+              onClick={() =>
+                toast({
+                  title: "Form submitted.",
+                  description: "Your personal recipe is generating!",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true,
+                })
+              }
+            >
+              Submit
+            </Button>
+          </Center>
+        </Form>
       </Formik>
     </>
   );
