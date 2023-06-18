@@ -47,10 +47,10 @@ export const options: Options = {
   preferredIngredients: ["Cumin", "Coriander", "Black Pepper", "Basil", "Parsley", "Nuts"],
   dietaryRestrictions: ["Cumin", "Coriander", "Nuts"],
   specificGoals: ["Weight lost", "Low carb", "Low fat", "More vegetables", "More protein"],
-  mealSize: ["little", "small", "regular", "large", "super large"],
+  mealSize: ["Little", "Small", "Regular", "Large", "Super Large"],
   mealtime: ["Breakfast", "Lunch", "Dinner", "Snacks"],
-  cookingTime: [0, 180],
-  servingSize: [1, NaN],
+  cookingTime: [15, 60],
+  servingSize: [1, 3],
   cookingFacilities: [
     "Stovetop",
     "Induction Cooktop",
@@ -65,8 +65,8 @@ export const options: Options = {
   specificCookingTechniques: ["Grilling", "Slow-cooking", "Stir-frying", "Baking"],
   specificTextures: ["Creamy", "Crunchy"],
   budget: {
-    unit: "per meal",
-    cost: [15, 50],
-    currency: "GBP",
+    unit: ["per person", "per meal"],
+    value: [15, 50],
+    currency: ["GBP", "EUR", "USD"],
   },
 };

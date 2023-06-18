@@ -4,20 +4,19 @@ export interface Options {
   spicyLevels: string[];
   preferredStyle: string[];
   preferredMaterials: string[];
-  preferredIngredients: string[]; // cumin
+  preferredIngredients: string[];
   dietaryRestrictions: string[];
   specificGoals: string[];
-  mealSize: ["little", "small", "regular", "large", "super large"];
-  //   mealSize: "little" | "small" | "regular" | "large" | "super large" | string[];
+  mealSize: string[];
   mealtime: string[];
-  cookingTime?: [min: number, max: number];
-  servingSize: [min: number, max: number | null];
+  cookingTime: [min: number, max: number];
+  servingSize: [min: number, max: number];
   cookingFacilities: string[];
   specificCookingTechniques: string[];
   specificTextures: string[]; // creamy or crunchy
-  budget?: {
-    unit: "per person" | "per meal";
-    cost: [min: number, max: number];
-    currency: string;
+  budget: {
+    unit: string[];
+    value: [min: number, max: number];
+    currency: string[];
   };
 }
