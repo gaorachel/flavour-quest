@@ -1,28 +1,13 @@
-import { Formik, Form } from "formik";
-import {
-  Container,
-  FormControl,
-  FormLabel,
-  HStack,
-  Heading,
-  Progress,
-  Text,
-  Flex,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Button,
-  useToast,
-  Center,
-} from "@chakra-ui/react";
+import { Formik, Form, Field } from "formik";
+import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
 import { options } from "./data/questOptions";
+
+import type { Answers } from "./type";
 import { MultiSelect } from "./components/MultiSelect";
 import { RangeSliderWithIndexValue } from "./components/RangeSliderWithIndexValue";
 import { ButtonGroup } from "./components/ButtonGroup";
 
-function App() {
+export function App() {
   const toast = useToast();
 
   return (
@@ -31,7 +16,7 @@ function App() {
         initialValues={{
           preferredCuisines: [],
           preferredFlavours: [],
-          spicyLevels: "",
+          spicyLevels: "Hot",
           preferredStyle: [],
           preferredMaterials: [],
           preferredIngredients: [],
@@ -39,126 +24,118 @@ function App() {
           specificGoals: [],
           mealSize: "",
           mealtime: [],
-          cookingTime: [],
-          servingSize: [],
+          cookingTime: [5, 10],
+          servingSize: [1, 3],
           cookingFacilities: [],
           specificCookingTechniques: [],
           specificTextures: [],
           budget: {
-            unit: [],
-            value: [],
+            unit: "per person",
+            value: [10, 50],
             currency: "GBP",
           },
         }}
-        onSubmit={() => {
-          console.log("submitted!");
+        onSubmit={(answers: Answers) => {
+          console.log(JSON.stringify(answers, null, 2));
         }}
       >
+        {/* {() => ( */}
         <Form>
-          <Flex position="fixed" width="100vw">
-            <Progress value={80} size="xs" colorScheme="orange" width="100vw" />
-            <Flex flexDirection={"row-reverse"} width="100vw" padding={2}>
-              <Text as="sub" fontSize="sm" color="tomato">
-                Completed 12/20
-              </Text>
-            </Flex>
-          </Flex>
-
           <Container mb={16}>
             <Heading paddingY={5} size="xl">
               Quests....
             </Heading>
+            <Field
+              name="preferredCuisines"
+              formLabel="What are your preferred cuisines?"
+              component={MultiSelect}
+              optionArr={options.preferredCuisines}
+            />
 
-            <MultiSelect formLabel="What are your preferred cuisines?" optionArr={options.preferredCuisines} />
+            <Field
+              name="preferredFlavours"
+              formLabel="What are your preferred flavours?"
+              component={MultiSelect}
+              optionArr={options.preferredFlavours}
+            />
 
-            <MultiSelect formLabel="What are your preferred flavours?" optionArr={options.preferredFlavours} />
+            <Field
+              name="preferredStyle"
+              formLabel="What are your preferred styles?"
+              component={MultiSelect}
+              optionArr={options.preferredStyle}
+            />
 
-            <FormControl>
-              <FormLabel>How spicy you would like?</FormLabel>
-              <ButtonGroup optionArr={options.spicyLevels} defaultOption={options.spicyLevels[2]} borderRadius="full" />
-            </FormControl>
+            <Field
+              name="preferredIngredients"
+              formLabel="What are your preferred ingredients?"
+              component={MultiSelect}
+              optionArr={options.preferredIngredients}
+            />
 
-            <MultiSelect formLabel="What are your preferred styles?" optionArr={options.preferredStyle} />
-
-            <MultiSelect formLabel="What are your preferred ingredients?" optionArr={options.preferredIngredients} />
-
-            <MultiSelect
-              formLabel="Do you have any dietary restrictions or allergies??"
+            <Field
+              name="dietaryRestrictions"
+              formLabel="Do you have any dietary restrictions or allergies?"
+              component={MultiSelect}
               optionArr={options.dietaryRestrictions}
             />
 
-            <MultiSelect
-              formLabel="Do you have any specific goals related to your meals??"
+            <Field
+              name="specificGoals"
+              formLabel="Do you have any specific goals related to your meals?"
+              component={MultiSelect}
               optionArr={options.specificGoals}
             />
 
-            <FormControl>
-              <FormLabel>How many people will you be cooking for?</FormLabel>
-              <HStack justify="center" gap={5}>
-                <Flex align="center">
-                  <Text fontSize="md" paddingRight={1}>
-                    Min No.
-                  </Text>
-                  <NumberInput id="min-people-number" size="md" maxW={24} defaultValue={options.servingSize[0]} min={1}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </Flex>
+            <Field
+              name="mealtime"
+              formLabel="What are your preferred meal time?"
+              component={MultiSelect}
+              optionArr={options.mealtime}
+            />
 
-                <Flex align="center">
-                  <Text fontSize="md" paddingRight={1}>
-                    Max No.
-                  </Text>
-                  <NumberInput id="max-people-number" size="md" maxW={24} defaultValue={options.servingSize[1]} min={1}>
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </Flex>
-              </HStack>
-            </FormControl>
-
-            <MultiSelect formLabel="What are your preferred meal time?" optionArr={options.mealtime} />
-
-            <FormControl>
-              <FormLabel>How much time (minutes) would you prefer to spend on cooking/preparing the meal?</FormLabel>
-              <RangeSliderWithIndexValue defaultValue={options.cookingTime} min={0} max={120} />
-            </FormControl>
-
-            <FormControl paddingTop={5}>
-              <FormLabel>What are your preferred meal sizes?</FormLabel>
-              <ButtonGroup optionArr={options.mealSize} defaultOption={options.mealSize[2]} borderRadius="full" />
-            </FormControl>
-
-            <MultiSelect
+            <Field
+              name="cookingFacilities"
               formLabel="What cooking facilities do you have available?"
+              component={MultiSelect}
               optionArr={options.cookingFacilities}
             />
 
-            <MultiSelect
-              formLabel="Are there any specific cooking techniques you enjoy or prefer? "
+            <Field
+              name="specificCookingTechniques"
+              formLabel="Are there any specific cooking techniques you enjoy or prefer?"
+              component={MultiSelect}
               optionArr={options.specificCookingTechniques}
             />
 
-            <MultiSelect
+            <Field
+              name="specificTextures"
               formLabel="Are there any specific textures or consistencies you enjoy?"
+              component={MultiSelect}
               optionArr={options.specificTextures}
             />
 
             <FormControl>
               <FormLabel>What is your budget?</FormLabel>
+
               <HStack alignItems="center" justify="space-between" p={1}>
-                <ButtonGroup
-                  defaultOption={options.budget.currency[0]}
+                <Field
+                  name="currency"
+                  component={ButtonGroup}
                   optionArr={options.budget.currency}
-                  borderRadius="full"
+                  defaultValue={options.budget.currency[0]}
+                  space={0}
                 />
-                <ButtonGroup optionArr={options.budget.unit} defaultOption={options.budget.unit[0]} space={0} />
+
+                <Field
+                  type="ratio"
+                  name="currency"
+                  component={ButtonGroup}
+                  optionArr={options.budget.unit}
+                  defaultValue={options.budget.unit[0]}
+                  space={0}
+                  values={options.budget.unit}
+                />
               </HStack>
               <RangeSliderWithIndexValue defaultValue={options.budget.value} min={0} max={200} />
             </FormControl>
@@ -168,6 +145,7 @@ function App() {
             <Button
               w="570px"
               bg="green.400"
+              type="submit"
               onClick={() =>
                 toast({
                   title: "Form submitted.",
@@ -182,9 +160,8 @@ function App() {
             </Button>
           </Center>
         </Form>
+        {/* )} */}
       </Formik>
     </>
   );
 }
-
-export default App;
