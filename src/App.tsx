@@ -1,11 +1,21 @@
 import { Formik, Form, Field } from "formik";
-import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Button,
+  useToast,
+  Center,
+  FormControl,
+  FormLabel,
+  HStack,
+} from "@chakra-ui/react";
 import { options } from "./data/questOptions";
 
 import type { Answers } from "./type";
 import { MultiSelect } from "./components/MultiSelect";
 import { RangeSliderWithIndexValue } from "./components/RangeSliderWithIndexValue";
 import { RadioGroup } from "./components/RadioGroup";
+import { NumInput } from "./components/NumInput";
 
 export function App() {
   const toast = useToast();
@@ -95,6 +105,15 @@ export function App() {
               formLabel="Do you have any specific goals related to your meals?"
               component={MultiSelect}
               optionArr={options.specificGoals}
+            />
+
+            <Field
+              name="servingSize"
+              formLabel="How many people will you be cooking for?"
+              component={NumInput}
+              min={options.servingSize.min}
+              max={options.servingSize.max}
+              defaultValue={options.servingSize}
             />
 
             <Field
