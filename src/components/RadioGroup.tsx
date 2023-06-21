@@ -2,7 +2,7 @@ import { Box, HStack, ResponsiveValue, UseRadioProps, useRadio, useRadioGroup } 
 import { ReactNode, useEffect } from "react";
 import { FieldProps } from "formik";
 
-interface ButtonProps extends UseRadioProps {
+interface RadioProps extends UseRadioProps {
   children: ReactNode;
   borderRadius?:
     | ResponsiveValue<
@@ -27,7 +27,7 @@ interface ButtonProps extends UseRadioProps {
     | undefined;
 }
 
-function Button(props: ButtonProps) {
+function Radio(props: RadioProps) {
   const { state, getInputProps, getCheckboxProps } = useRadio(props);
 
   return (
@@ -55,7 +55,7 @@ function Button(props: ButtonProps) {
   );
 }
 
-interface ButtonGroupProps extends FieldProps {
+interface RadioGroupProps extends FieldProps {
   name: string;
   optionArr: string[];
   defaultValue?: string;
@@ -83,7 +83,7 @@ interface ButtonGroupProps extends FieldProps {
     | undefined;
 }
 
-export function ButtonGroup(props: ButtonGroupProps) {
+export function RadioGroup(props: RadioGroupProps) {
   const {
     optionArr,
     defaultValue,
@@ -110,11 +110,11 @@ export function ButtonGroup(props: ButtonGroupProps) {
   return (
     <HStack spacing={space} {...getRootProps()}>
       {optionArr.map((option) => {
-        const btn = getRadioProps({ value: option });
+        const radio = getRadioProps({ value: option });
         return (
-          <Button key={option} {...btn} borderRadius={borderRadius} isChecked={field.value === option}>
+          <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
             {option}
-          </Button>
+          </Radio>
         );
       })}
     </HStack>
