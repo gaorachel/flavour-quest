@@ -9,14 +9,14 @@ export interface Options {
   specificGoals: string[];
   mealSize: string[];
   mealtime: string[];
-  cookingTime: [min: number, max: number];
-  servingSize: [min: number, max: number];
+  cookingTime: { min: number; max: number };
+  servingSize: { min: number; max: number };
   cookingFacilities: string[];
   specificCookingTechniques: string[];
-  specificTextures: string[]; // creamy or crunchy
+  specificTextures: string[];
   budget: {
     unit: string[];
-    value: [min: number, max: number];
+    value: { min: number; max: number };
     currency: string[];
   };
 }
