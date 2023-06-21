@@ -34,14 +34,14 @@ export function App() {
           specificGoals: [],
           mealSize: "",
           mealtime: [],
-          cookingTime: [5, 10],
-          servingSize: [1, 3],
+          cookingTime: { min: 15, max: 60 },
+          servingSize: { min: 0, max: 0 },
           cookingFacilities: [],
           specificCookingTechniques: [],
           specificTextures: [],
           budget: {
             unit: "per person",
-            value: [10, 50],
+            value: { min: 15, max: 50 },
             currency: "GBP",
           },
         }}
