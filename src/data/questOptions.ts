@@ -50,7 +50,7 @@ export const options: Options = {
   mealSize: ["Little", "Small", "Regular", "Large", "Super Large"],
   mealtime: ["Breakfast", "Lunch", "Dinner", "Snacks"],
   cookingTime: { min: 15, max: 60 },
-  servingSize: { min: 1, max: 3 },
+  servingSize: { min: 1, max: 30 },
   cookingFacilities: [
     "Stovetop",
     "Induction Cooktop",
