@@ -5,7 +5,7 @@ import { options } from "./data/questOptions";
 import type { Answers } from "./type";
 import { MultiSelect } from "./components/MultiSelect";
 import { RangeSliderWithIndexValue } from "./components/RangeSliderWithIndexValue";
-import { ButtonGroup } from "./components/ButtonGroup";
+import { RadioGroup } from "./components/RadioGroup";
 
 export function App() {
   const toast = useToast();
@@ -39,7 +39,6 @@ export function App() {
           console.log(JSON.stringify(answers, null, 2));
         }}
       >
-        {/* {() => ( */}
         <Form>
           <Container mb={16}>
             <Heading paddingY={5} size="xl">
@@ -58,6 +57,17 @@ export function App() {
               component={MultiSelect}
               optionArr={options.preferredFlavours}
             />
+
+            <FormControl>
+              <FormLabel>How spicy you would like?</FormLabel>
+              <Field
+                name="spicyLevels"
+                component={RadioGroup}
+                optionArr={options.spicyLevels}
+                defaultValue={options.spicyLevels[2]}
+                borderRadius="full"
+              />
+            </FormControl>
 
             <Field
               name="preferredStyle"
@@ -120,21 +130,19 @@ export function App() {
 
               <HStack alignItems="center" justify="space-between" p={1}>
                 <Field
-                  name="currency"
-                  component={ButtonGroup}
+                  name="budget.currency"
+                  component={RadioGroup}
                   optionArr={options.budget.currency}
                   defaultValue={options.budget.currency[0]}
-                  space={0}
+                  borderRadius="full"
                 />
 
                 <Field
-                  type="ratio"
-                  name="currency"
-                  component={ButtonGroup}
+                  name="budget.unit"
+                  component={RadioGroup}
                   optionArr={options.budget.unit}
                   defaultValue={options.budget.unit[0]}
                   space={0}
-                  values={options.budget.unit}
                 />
               </HStack>
               <RangeSliderWithIndexValue defaultValue={options.budget.value} min={0} max={200} />
@@ -160,7 +168,6 @@ export function App() {
             </Button>
           </Center>
         </Form>
-        {/* )} */}
       </Formik>
     </>
   );
