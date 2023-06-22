@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack, VStack } from "@chakra-ui/react";
+import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
 import { options } from "./data/questOptions";
 
 import type { Answers } from "./type";
