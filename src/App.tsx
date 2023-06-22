@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
+import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack, VStack } from "@chakra-ui/react";
 import { options } from "./data/questOptions";
 
 import type { Answers } from "./type";
@@ -59,16 +59,18 @@ export function App() {
               optionArr={options.preferredFlavours}
             />
 
-            <FormControl>
-              <FormLabel>How spicy you would like?</FormLabel>
-              <Field
-                name="spicyLevels"
-                component={RadioGroup}
-                optionArr={options.spicyLevels}
-                defaultValue={options.spicyLevels[2]}
-                borderRadius="full"
-              />
-            </FormControl>
+            <>
+              <FormLabel> How spicy would you like? </FormLabel>
+              <Center>
+                <Field
+                  name="spicyLevels"
+                  component={RadioGroup}
+                  optionArr={options.spicyLevels}
+                  defaultValue={options.spicyLevels[2]}
+                  borderRadius="full"
+                />
+              </Center>
+            </>
 
             <Field
               name="preferredStyle"
