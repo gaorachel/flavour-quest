@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Mixin, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -21,7 +21,7 @@ interface NumInputProps extends FieldProps {
   valueMax: number;
   min: number;
   max: number;
-  defaultValue: { min: number; max: number };
+  defaultValue: [min: number, max: number];
 }
 
 export function NumInput(props: NumInputProps) {
@@ -35,8 +35,8 @@ export function NumInput(props: NumInputProps) {
     form: { setFieldValue },
   } = props;
 
-  const [valueMin, setValueMin] = useState(0);
-  const [valueMax, setValueMax] = useState(1);
+  const [valueMin, setValueMin] = useState(defaultValue[0]);
+  const [valueMax, setValueMax] = useState(defaultValue[1]);
 
   const handleChangeMin = (valueMin: string) => (
     setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueMin)
@@ -57,7 +57,7 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-min`}
               name={`${name}.min`}
               value={valueMin}
-              defaultValue={defaultValue.min}
+              defaultValue={defaultValue[0]}
               min={min}
               max={valueMax}
               onChange={handleChangeMin}
@@ -78,7 +78,7 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-max`}
               name={`${name}.max`}
               value={valueMax}
-              defaultValue={defaultValue.max}
+              defaultValue={defaultValue[1]}
               min={valueMin}
               max={max}
               onChange={handleChangeMax}

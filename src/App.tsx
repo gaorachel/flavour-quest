@@ -1,14 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import {
-  Container,
-  Heading,
-  Button,
-  useToast,
-  Center,
-  FormControl,
-  FormLabel,
-  HStack,
-} from "@chakra-ui/react";
+import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
 import { options } from "./data/questOptions";
 
 import type { Answers } from "./type";
@@ -35,7 +26,7 @@ export function App() {
           mealSize: "",
           mealtime: [],
           cookingTime: { min: 15, max: 60 },
-          servingSize: { min: 0, max: 0 },
+          servingSize: { min: 1, max: 3 },
           cookingFacilities: [],
           specificCookingTechniques: [],
           specificTextures: [],
@@ -87,6 +78,13 @@ export function App() {
             />
 
             <Field
+              name="preferredMaterials"
+              formLabel="What are your preferred materials?"
+              component={MultiSelect}
+              optionArr={options.preferredMaterials}
+            />
+
+            <Field
               name="preferredIngredients"
               formLabel="What are your preferred ingredients?"
               component={MultiSelect}
@@ -113,7 +111,7 @@ export function App() {
               component={NumInput}
               min={options.servingSize.min}
               max={options.servingSize.max}
-              defaultValue={options.servingSize}
+              defaultValue={[1, 3]}
             />
 
             <Field
@@ -121,6 +119,15 @@ export function App() {
               formLabel="What are your preferred meal time?"
               component={MultiSelect}
               optionArr={options.mealtime}
+            />
+
+            <Field
+              name="cookingTime"
+              formLabel="How much time (minutes) would you prefer to spend on cooking/preparing the meal?"
+              component={RangeSliderWithIndexValue}
+              defaultValue={[options.cookingTime.min, options.cookingTime.max]}
+              min={0}
+              max={120}
             />
 
             <Field
@@ -164,7 +171,13 @@ export function App() {
                   space={0}
                 />
               </HStack>
-              <RangeSliderWithIndexValue defaultValue={options.budget.value} min={0} max={200} />
+              <Field
+                name="budget.value"
+                component={RangeSliderWithIndexValue}
+                defaultValue={[options.budget.value.min, options.budget.value.max]}
+                min={0}
+                max={200}
+              />
             </FormControl>
           </Container>
 
