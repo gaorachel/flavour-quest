@@ -1,4 +1,5 @@
-import { Flex, Box, Text, chakra, useRangeSlider } from "@chakra-ui/react";
+import { Flex, Box, Text, chakra, useRangeSlider, FormLabel } from "@chakra-ui/react";
+import { FieldProps } from "formik";
 interface ThumbProps {
   value: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,17 +26,32 @@ function Thumb({ value, thumbProps }: ThumbProps) {
     </Box>
   );
 }
-interface RangeSliderProps {
+interface RangeSliderProps extends FieldProps {
+  name: string;
   min: number;
   max: number;
   defaultValue: [number, number];
+  formLabel?: string;
 }
 
-export function RangeSliderWithIndexValue({ min, max, defaultValue }: RangeSliderProps) {
-  const { state, getInnerTrackProps, getInputProps, getRootProps, getThumbProps, getTrackProps } = useRangeSlider({
+export function RangeSliderWithIndexValue(props: RangeSliderProps) {
+  const {
     min,
     max,
     defaultValue,
+    formLabel,
+    field,
+    form: { setFieldValue },
+  } = props;
+
+  const { state, getInnerTrackProps, getInputProps, getRootProps, getThumbProps, getTrackProps } = useRangeSlider({
+    name: field.name,
+    min,
+    max,
+    defaultValue,
+    onChange: (value) => {
+      setFieldValue(field.name, value);
+    },
   });
 
   const { ...thumbPropsFirstIndex } = getThumbProps({
@@ -48,6 +64,7 @@ export function RangeSliderWithIndexValue({ min, max, defaultValue }: RangeSlide
 
   return (
     <Box>
+      <FormLabel> {formLabel} </FormLabel>
       <chakra.div cursor="pointer" {...getRootProps()}>
         <input {...getInputProps({ index: 0 })} hidden />
         <input {...getInputProps({ index: 1 })} hidden />

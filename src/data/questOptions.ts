@@ -49,8 +49,8 @@ export const options: Options = {
   specificGoals: ["Weight lost", "Low carb", "Low fat", "More vegetables", "More protein"],
   mealSize: ["Little", "Small", "Regular", "Large", "Super Large"],
   mealtime: ["Breakfast", "Lunch", "Dinner", "Snacks"],
-  cookingTime: [15, 60],
-  servingSize: [1, 3],
+  cookingTime: { min: 15, max: 60 },
+  servingSize: { min: 1, max: 30 },
   cookingFacilities: [
     "Stovetop",
     "Induction Cooktop",
@@ -66,7 +66,7 @@ export const options: Options = {
   specificTextures: ["Creamy", "Crunchy"],
   budget: {
     unit: ["per person", "per meal"],
-    value: [15, 50],
+    value: { min: 15, max: 50 },
     currency: ["GBP", "EUR", "USD"],
   },
 };

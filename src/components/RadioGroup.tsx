@@ -1,7 +1,8 @@
 import { Box, HStack, ResponsiveValue, UseRadioProps, useRadio, useRadioGroup } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { FieldProps } from "formik";
 
-interface ButtonProps extends UseRadioProps {
+interface RadioProps extends UseRadioProps {
   children: ReactNode;
   borderRadius?:
     | ResponsiveValue<
@@ -26,28 +27,25 @@ interface ButtonProps extends UseRadioProps {
     | undefined;
 }
 
-function Button(props: ButtonProps) {
-  const { state, getInputProps, getRadioProps } = useRadio(props);
-
-  const input = getInputProps();
-  const checkbox = getRadioProps();
+function Radio(props: RadioProps) {
+  const { state, getInputProps, getCheckboxProps } = useRadio(props);
 
   return (
     <Box as="label">
-      <input {...input} />
+      <input {...getInputProps()} />
       <Box
-        {...checkbox}
-        cursor="pointer"
-        borderWidth="2px"
+        {...getCheckboxProps()}
         borderRadius={props.borderRadius}
-        borderColor="gray.300"
-        color="gray"
         _checked={{
           bg: state.isChecked ? "orange" : "transparent",
           borderWidth: "2px",
           borderColor: "orange",
           color: "white",
         }}
+        cursor="pointer"
+        borderWidth="2px"
+        borderColor="gray.300"
+        color="gray"
         px={2}
         py={0.4}
       >
@@ -57,9 +55,10 @@ function Button(props: ButtonProps) {
   );
 }
 
-interface ButtonGroupProps {
+interface RadioGroupProps extends FieldProps {
+  name: string;
   optionArr: string[];
-  defaultOption?: string;
+  defaultValue?: string;
   space?: number;
   borderRadius?:
     | ResponsiveValue<
@@ -84,19 +83,38 @@ interface ButtonGroupProps {
     | undefined;
 }
 
-export function ButtonGroup({ optionArr, defaultOption, space, borderRadius }: ButtonGroupProps) {
+export function RadioGroup(props: RadioGroupProps) {
+  const {
+    optionArr,
+    defaultValue,
+    space,
+    borderRadius,
+    field,
+    form: { setFieldValue },
+  } = props;
+
   const { getRootProps, getRadioProps } = useRadioGroup({
-    defaultValue: defaultOption,
+    defaultValue,
+    name: field.name,
+    onChange: (value) => {
+      setFieldValue(field.name, value);
+    },
   });
+
+  useEffect(() => {
+    if (defaultValue && !field.value) {
+      setFieldValue(field.name, defaultValue);
+    }
+  }, [defaultValue, field.name, field.value, setFieldValue]);
 
   return (
     <HStack spacing={space} {...getRootProps()}>
       {optionArr.map((option) => {
         const radio = getRadioProps({ value: option });
         return (
-          <Button key={option} borderRadius={borderRadius} {...radio}>
+          <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
             {option}
-          </Button>
+          </Radio>
         );
       })}
     </HStack>
