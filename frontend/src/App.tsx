@@ -1,5 +1,16 @@
 import { Formik, Form, Field } from "formik";
-import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Button,
+  useToast,
+  Center,
+  FormControl,
+  FormLabel,
+  HStack,
+  Box,
+  Highlight,
+} from "@chakra-ui/react";
 import { options } from "./data/questOptions";
 
 import type { Answers } from "./type";
@@ -51,6 +62,11 @@ export function App() {
               component={MultiSelect}
               optionArr={options.preferredCuisines}
             />
+            <Box>
+              <Highlight query="world" styles={{ py: "1", fontWeight: "normal", colorScheme: "orange.300" }}>
+                hi world
+              </Highlight>
+            </Box>
 
             <Field
               name="preferredFlavours"
