@@ -1,1 +1,1 @@
-# favour-quest
+# flavour-quest

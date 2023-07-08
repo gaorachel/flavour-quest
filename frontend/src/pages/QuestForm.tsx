@@ -11,15 +11,15 @@ import {
   Box,
   Highlight,
 } from "@chakra-ui/react";
-import { options } from "./data/questOptions";
+import { options } from "../data/questOptions";
 
-import type { Answers } from "./type";
-import { MultiSelect } from "./components/MultiSelect";
-import { RangeSliderWithIndexValue } from "./components/RangeSliderWithIndexValue";
-import { RadioGroup } from "./components/RadioGroup";
-import { NumInput } from "./components/NumInput";
+import type { Answers } from "../type";
+import { MultiSelect } from "../components/MultiSelect";
+import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
+import { RadioGroup } from "../components/RadioGroup";
+import { NumInput } from "../components/NumInput";
 
-export function App() {
+export function QuestFrom() {
   const toast = useToast();
 
   return (
