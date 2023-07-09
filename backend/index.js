@@ -2,21 +2,13 @@ const express = require("express");
 const axios = require("axios");
 
 const app = express();
+app.use(express.json());
 
 const url = "/api/v1/quest";
-const answer = [];
-
-app.get(url, (req, res) => {
-  res.send(answer);
-});
 
 app.post(url, (req, res) => {
-  answer.push(req.body);
-
-  res.status(200).json({
-    status: "success",
-    data: answer,
-  });
+  const answer = req.body;
+  res.send(answer);
 });
 
 const port = 5001;

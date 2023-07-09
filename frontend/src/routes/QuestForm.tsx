@@ -51,8 +51,6 @@ export function QuestFrom() {
           },
         }}
         onSubmit={(answers: Answers) => {
-          // console.log(JSON.stringify(answers, null, 2));
-          // console.log(answers);
           navigate("/results", { state: answers });
         }}
       >
