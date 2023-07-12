@@ -1,14 +1,16 @@
 const express = require("express");
 const axios = require("axios");
+const { askGPT } = require("./openai");
 
 const app = express();
 app.use(express.json());
 
 const url = "/api/v1/quest";
 
-app.post(url, (req, res) => {
+app.get(url, async (req, res) => {
   const answer = req.body;
-  res.send(answer);
+  const response = await askGPT(answer);
+  res.setHeader("Content-type", "text/html").send(response.content);
 });
 
 const port = 5001;
