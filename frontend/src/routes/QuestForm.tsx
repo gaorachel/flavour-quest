@@ -66,12 +66,6 @@ export function QuestFrom() {
                 component={MultiSelect}
                 optionArr={options.preferredCuisines}
               />
-              <Box>
-                <Highlight query="world" styles={{ py: "1", fontWeight: "normal", colorScheme: "orange.300" }}>
-                  hi world
-                </Highlight>
-              </Box>
-
               <Field
                 name="preferredFlavours"
                 formLabel="What are your preferred flavours?"
