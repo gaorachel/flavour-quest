@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-async function getResFromOpenAI() {
+async function askGPT(data, format) {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -13,9 +13,17 @@ async function getResFromOpenAI() {
 
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: "what the best british food?" }],
+    messages: [
+      {
+        role: "user",
+        content: `Hi, can you give me 1 recipe based on the following info. No need to meet all the requirements: ${data}. . Here is the result format: ${JSON.stringify(
+          format
+        )}`,
+      },
+    ],
   });
-  console.log(1, completion.data.choices[0].message);
+
+  return JSON.parse(completion.data.choices[0].message?.content);
 }
 
-getResFromOpenAI();
+module.exports = { askGPT };

@@ -20,7 +20,6 @@ export interface Options {
     currency: string[];
   };
 }
-
 export interface Answers {
   preferredCuisines: string[] | undefined;
   preferredFlavours: string[] | undefined;
@@ -42,4 +41,15 @@ export interface Answers {
     value: { min: number; max: number };
     currency: string;
   };
+}
+
+export interface ResRecipe {
+  recipeName: string;
+  cuisineType: string;
+  servings: number;
+  prepTime: number;
+  cookTime: number;
+  totalTime: number;
+  ingredients: string[];
+  instructions: string[];
 }
