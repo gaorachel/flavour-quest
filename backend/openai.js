@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-async function askGPT(answer) {
+async function askGPT(data, format) {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -16,12 +16,14 @@ async function askGPT(answer) {
     messages: [
       {
         role: "user",
-        content: `Hi, can you give me 1 recipe in HTML format based on the following info. No need to meet all the requirements: ${answer}`,
+        content: `Hi, can you give me 1 recipe based on the following info. No need to meet all the requirements: ${data}. . Here is the result format: ${JSON.stringify(
+          format
+        )}`,
       },
     ],
   });
-  // console.log(completion.data.choices[0].message);
-  return completion.data.choices[0].message;
+
+  return JSON.parse(completion.data.choices[0].message?.content);
 }
 
 module.exports = { askGPT };
