@@ -6,11 +6,9 @@ import {
   ListItem,
   ListIcon,
   OrderedList,
-  UnorderedList,
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Heading,
   TableContainer,
   Thead,
@@ -23,10 +21,9 @@ import {
   Th,
   Divider,
   Box,
-  Image,
 } from "@chakra-ui/react";
-import { Icon } from "@chakra-ui/react";
 import { TimeIcon } from "@chakra-ui/icons";
+import { MdCircle } from "react-icons/md";
 
 import { ResRecipe } from "../type";
 
@@ -43,16 +40,15 @@ export function Results() {
 
   return (
     <VStack paddingY={10} gap={10}>
-      <Card align="center">
+      <Card align="center" bgColor="beige" w="90vh">
         <CardHeader>
-          <Heading size="lg"> {results?.recipeName} </Heading>
+          <Heading size="lg" color="green.600" fontWeight="semibold" letterSpacing="wide">
+            {results?.recipeName}
+          </Heading>
         </CardHeader>
         <CardBody gap={5} color="gray.500" fontWeight="semibold" letterSpacing="wide">
-          <Flex align="" gap={2}>
-            <Flex gap={1}>
-              <Image src={`https://www.countryflagicons.com/FLAT/16/${results.iso2}.png`} /> {results?.cuisineType}
-            </Flex>
-            |
+          <Flex align="center" gap={2}>
+            <Flex gap={1}>{results?.cuisineType}</Flex>|
             <Flex gap={1}>
               <TimeIcon w={5} h={5} /> {results?.totalTime} mins
             </Flex>
@@ -61,7 +57,15 @@ export function Results() {
       </Card>
       <Flex gap={10} height="50vh">
         <TableContainer>
-          <Table variant="simple" size="sm">
+          <Table
+            padding={10}
+            variant="simple"
+            size="sm"
+            bg="beige"
+            color="gray.500"
+            fontWeight="semibold"
+            letterSpacing="wide"
+          >
             <Thead>
               <Tr>
                 <Th> INFO </Th>
@@ -70,7 +74,7 @@ export function Results() {
             </Thead>
             <Tbody>
               <Tr>
-                <Td> Preparing Time </Td>
+                <Td> Preparing Time</Td>
                 <Td isNumeric> {results?.prepTime} </Td>
               </Tr>
               <Tr>
@@ -89,22 +93,29 @@ export function Results() {
 
         <Flex direction="column" gap={5}>
           <Box>
-            <Heading size="md"> Ingredients </Heading>
+            <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
+              Ingredients
+            </Heading>
+
             <List p={2}>
-              <UnorderedList>
-                {results?.ingredients.map((el, i) => (
-                  <ListItem key={i}>{el}</ListItem>
-                ))}
-              </UnorderedList>
+              {results?.ingredients.map((el, i) => (
+                <ListItem key={i}>
+                  <ListIcon as={MdCircle} h={3} color="green.300" />
+                  {el}
+                </ListItem>
+              ))}
             </List>
           </Box>
 
           <Box>
-            <Heading size="md"> Instructions </Heading>
+            <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
+              {" "}
+              Instructions{" "}
+            </Heading>
             <List p={2}>
               <OrderedList>
                 {results?.instructions.map((el, i) => (
-                  <ListItem key={i}> {el} </ListItem>
+                  <ListItem key={i}>{el}</ListItem>
                 ))}
               </OrderedList>
             </List>
