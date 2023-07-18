@@ -22,9 +22,6 @@ import {
   Divider,
   Box,
   Image,
-  Grid,
-  GridItem,
-  Center,
 } from "@chakra-ui/react";
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
