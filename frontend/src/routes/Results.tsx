@@ -21,16 +21,20 @@ import {
   Th,
   Divider,
   Box,
+  Image,
+  Grid,
+  GridItem,
+  Center,
 } from "@chakra-ui/react";
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
 
-import { ResRecipe } from "../type";
+import { ResutlsRes } from "../type";
 
 export function Results() {
   const location = useLocation();
   const formData = location.state;
-  const [results, setResults] = useState<ResRecipe>();
+  const [results, setResults] = useState<ResutlsRes>();
 
   useEffect(() => {
     axios.post("/api/v1/quest", formData).then((res) => {
@@ -39,89 +43,96 @@ export function Results() {
   }, [formData]);
 
   return (
-    <VStack paddingY={10} gap={10}>
-      <Card align="center" bgColor="beige" w="90vh">
-        <CardHeader>
-          <Heading size="lg" color="green.600" fontWeight="semibold" letterSpacing="wide">
-            {results?.recipeName}
-          </Heading>
-        </CardHeader>
-        <CardBody gap={5} color="gray.500" fontWeight="semibold" letterSpacing="wide">
-          <Flex align="center" gap={2}>
-            <Flex gap={1}>{results?.cuisineType}</Flex>|
-            <Flex gap={1}>
-              <TimeIcon w={5} h={5} /> {results?.totalTime} mins
+    <VStack>
+      <Box paddingY={5} width="1000px">
+        <Card align="center" bgColor="beige">
+          <CardHeader>
+            <Heading size="lg" color="green.600" fontWeight="semibold" letterSpacing="wide">
+              {results?.recipeName}
+            </Heading>
+          </CardHeader>
+          <CardBody color="gray.500" fontWeight="semibold" letterSpacing="wide">
+            <Flex align="center" gap={2}>
+              <Flex gap={1}>{results?.cuisineType}</Flex>|
+              <Flex gap={1}>
+                <TimeIcon w={5} h={5} /> {results?.totalTime} mins
+              </Flex>
             </Flex>
-          </Flex>
-        </CardBody>
-      </Card>
-      <Flex gap={10} height="50vh">
-        <TableContainer>
-          <Table
-            padding={10}
-            variant="simple"
-            size="sm"
-            bg="beige"
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-          >
-            <Thead>
-              <Tr>
-                <Th> INFO </Th>
-                <Th> PER MEAL </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td> Preparing Time</Td>
-                <Td isNumeric> {results?.prepTime} </Td>
-              </Tr>
-              <Tr>
-                <Td> Cooking Time </Td>
-                <Td isNumeric> {results?.cookTime} </Td>
-              </Tr>
-              <Tr>
-                <Td> Servings </Td>
-                <Td isNumeric> {results?.servings} </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
+          </CardBody>
+        </Card>
+      </Box>
 
-        <Divider orientation="vertical" />
+      <Box width="1000px">
+        <Flex gap={5} height="75vh">
+          <TableContainer width="500px">
+            <Table variant="simple" size="sm" bg="beige" color="gray.500" fontWeight="semibold" letterSpacing="wide">
+              <Thead>
+                <Tr>
+                  <Th> INFO </Th>
+                  <Th> PER MEAL </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td> Preparing Time</Td>
+                  <Td isNumeric> {results?.prepTime} </Td>
+                </Tr>
+                <Tr>
+                  <Td> Cooking Time </Td>
+                  <Td isNumeric> {results?.cookTime} </Td>
+                </Tr>
+                <Tr>
+                  <Td> Servings </Td>
+                  <Td isNumeric> {results?.servings} </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
 
-        <Flex direction="column" gap={5}>
-          <Box>
-            <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
-              Ingredients
-            </Heading>
+          <Divider orientation="vertical" />
 
-            <List p={2}>
-              {results?.ingredients.map((el, i) => (
-                <ListItem key={i}>
-                  <ListIcon as={MdCircle} h={3} color="green.300" />
-                  {el}
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+          <Flex direction="column" gap={5}>
+            <Box>
+              <Image src={results?.img} alt="Food Image" objectFit="cover" />
+            </Box>
+            <Box>
+              <Heading
+                p={1}
+                size="md"
+                color="green.600"
+                bgColor="beige"
+                fontWeight="semibold"
+                letterSpacing="wide"
+                w="700px"
+              >
+                Ingredients
+              </Heading>
 
-          <Box>
-            <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
-              {" "}
-              Instructions{" "}
-            </Heading>
-            <List p={2}>
-              <OrderedList>
-                {results?.instructions.map((el, i) => (
-                  <ListItem key={i}>{el}</ListItem>
+              <List p={2}>
+                {results?.ingredients.map((el, i) => (
+                  <ListItem key={i}>
+                    <ListIcon as={MdCircle} h={3} color="green.300" />
+                    {el}
+                  </ListItem>
                 ))}
-              </OrderedList>
-            </List>
-          </Box>
+              </List>
+            </Box>
+
+            <Box>
+              <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
+                Instructions
+              </Heading>
+              <List p={2}>
+                <OrderedList>
+                  {results?.instructions.map((el, i) => (
+                    <ListItem key={i}>{el}</ListItem>
+                  ))}
+                </OrderedList>
+              </List>
+            </Box>
+          </Flex>
         </Flex>
-      </Flex>
+      </Box>
     </VStack>
   );
 }

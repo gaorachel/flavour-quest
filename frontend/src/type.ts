@@ -43,7 +43,7 @@ export interface Answers {
   };
 }
 
-export interface ResRecipe {
+export interface ResutlsRes {
   recipeName: string;
   cuisineType: string;
   servings: number;
@@ -52,4 +52,5 @@ export interface ResRecipe {
   totalTime: number;
   ingredients: string[];
   instructions: string[];
+  img: string;
 }
