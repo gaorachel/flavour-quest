@@ -60,7 +60,7 @@ export function Results() {
       </Box>
 
       <Box width="1000px">
-        <Flex gap={5} height="75vh">
+        <Flex gap={5} height="container.lg">
           <TableContainer width="500px">
             <Table variant="simple" size="sm" bg="beige" color="gray.500" fontWeight="semibold" letterSpacing="wide">
               <Thead>
@@ -89,9 +89,7 @@ export function Results() {
           <Divider orientation="vertical" />
 
           <Flex direction="column" gap={5}>
-            <Box>
-              <Image src={results?.img} alt="Food Image" objectFit="cover" />
-            </Box>
+            <Image src={results?.img} alt="Food Image" objectFit="cover" />
             <Box>
               <Heading
                 p={1}
@@ -119,7 +117,7 @@ export function Results() {
               <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
                 Instructions
               </Heading>
-              <List p={2}>
+              <List paddingY={2} paddingX={4}>
                 <OrderedList>
                   {results?.instructions.map((el, i) => (
                     <ListItem key={i}>{el}</ListItem>
