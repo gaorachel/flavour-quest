@@ -2,6 +2,8 @@ const express = require("express");
 const axios = require("axios");
 const { askGPT } = require("./openai");
 
+const recipeRes = require("./test.js");
+
 const app = express();
 app.use(express.json());
 
@@ -34,8 +36,22 @@ const resFormat = {
 
 app.post(url, async (req, res) => {
   const formData = req.body;
-  const response = await askGPT(formData, resFormat);
-  const response = res.send(response);
+  const recipeRes = await askGPT(formData, resFormat);
+
+  const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
+    params: {
+      key: "AIzaSyAplUhggRTkPwZ04eA1Yu_d_gL8pouukkI",
+      cx: "134bfe2a728d54c51",
+      searchType: "image",
+      num: 1,
+      hq: "16:9",
+      imgSize: "large",
+      gl: "countryUK",
+      q: recipeRes.recipeName,
+    },
+  });
+
+  res.send({ ...recipeRes, img: imgRes.data.items[0].link });
 });
 
 const port = 5001;

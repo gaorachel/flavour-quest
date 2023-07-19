@@ -1,24 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import {
-  Container,
-  Heading,
-  Button,
-  useToast,
-  Center,
-  FormControl,
-  FormLabel,
-  HStack,
-  Box,
-  Highlight,
-} from "@chakra-ui/react";
+import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
 import { options } from "../data/questOptions";
-
-import type { Answers } from "../type";
 import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
+
+import type { Answers } from "../type";
 
 export function QuestFrom() {
   const navigate = useNavigate();
