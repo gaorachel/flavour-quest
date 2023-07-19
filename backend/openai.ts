@@ -1,11 +1,13 @@
-const dotenv = require("dotenv");
-const { Configuration, OpenAIApi } = require("openai");
+import * as dotenv from "dotenv";
+import { Configuration, OpenAIApi } from "openai";
+
+import { Answers, Format } from "./type";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-async function askGPT(data, format) {
+export async function askGPT(data: Answers, format: Format) {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -23,7 +25,7 @@ async function askGPT(data, format) {
     ],
   });
 
-  return JSON.parse(completion.data.choices[0].message?.content);
+  return JSON.parse(completion.data.choices[0].message?.content as string);
 }
 
 module.exports = { askGPT };
