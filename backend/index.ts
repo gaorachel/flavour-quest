@@ -1,15 +1,18 @@
-const express = require("express");
-const axios = require("axios");
-const { askGPT } = require("./openai");
+import express, { Request, Response } from "express";
+import axios from "axios";
+import { askGPT } from "./openai";
 
-const recipeRes = require("./test.js");
+import { Answers, Format } from "./type";
+
+// import recipeRes from "./mockRes.js";
+// import imgRes = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
 
 const app = express();
 app.use(express.json());
 
 const url = "/api/v1/quest";
 
-const resFormat = {
+const resExample = {
   recipeName: "Spaghetti Carbonara",
   cuisineType: "Italian",
   servings: 2,
@@ -34,24 +37,30 @@ const resFormat = {
   ],
 };
 
-app.post(url, async (req, res) => {
-  const formData = req.body;
-  const recipeRes = await askGPT(formData, resFormat);
+app.post(url, async (req: Request, res: Response) => {
+  try {
+    const formData: Answers = req.body;
+    const recipeRes: Format = await askGPT(formData, resExample);
 
-  const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
-    params: {
-      key: "AIzaSyAplUhggRTkPwZ04eA1Yu_d_gL8pouukkI",
-      cx: "134bfe2a728d54c51",
-      searchType: "image",
-      num: 1,
-      hq: "16:9",
-      imgSize: "large",
-      gl: "countryUK",
-      q: recipeRes.recipeName,
-    },
-  });
+    const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
+      params: {
+        key: process.env.GOOGLE_SEARCH_API_KEY,
+        cx: process.env.GOOGLE_SEARCH_API_CX,
+        searchType: "image",
+        num: 1,
+        hq: "16:9",
+        imgSize: "large",
+        gl: "countryUK",
+        q: recipeRes.recipeName,
+      },
+    });
 
-  res.send({ ...recipeRes, img: imgRes.data.items[0].link });
+    res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link });
+
+    // res.send({ ...recipeRes, img: imgRes });
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
 });
 
 const port = 5001;
