@@ -20,12 +20,12 @@ const router = createBrowserRouter([
 const { ToastContainer, toast } = createStandaloneToast();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <ChakraProvider>
-      <RouterProvider router={router} />
-      <ToastContainer />
-    </ChakraProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ChakraProvider>
+    <RouterProvider router={router} />
+    <ToastContainer />
+  </ChakraProvider>
+  // </React.StrictMode>
 );
 
 toast({ title: "Chakra UI" });

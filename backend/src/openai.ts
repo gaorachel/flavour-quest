@@ -27,5 +27,3 @@ export async function askGPT(data: Answers, format: Format) {
 
   return JSON.parse(completion.data.choices[0].message?.content as string);
 }
-
-module.exports = { askGPT };
