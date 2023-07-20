@@ -1,3 +1,5 @@
+import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
@@ -7,12 +9,17 @@ import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexVal
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
-import type { Answers } from "../type";
+import type { Answers, ResultsRes } from "../type";
 
 export function QuestFrom() {
   const navigate = useNavigate();
 
-  const toast = useToast();
+  const handleSubmit = async (answers: Answers) => {
+    const res = await axios.post("/api/v1/quest", answers);
+    setTimeout(() => {
+      navigate("/results", { state: res.data });
+    }, 5000);
+  };
 
   return (
     <>
@@ -39,9 +46,7 @@ export function QuestFrom() {
             currency: "GBP",
           },
         }}
-        onSubmit={(answers: Answers) => {
-          navigate("/results", { state: answers });
-        }}
+        onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
