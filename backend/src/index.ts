@@ -1,11 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import { Request, Response } from "express";
 import axios from "axios";
 import { askGPT } from "./openai";
 
 import { Answers, Format } from "./type";
 
-// import recipeRes from "./mockRes.js";
-// import imgRes = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
+// import { recipeRes } from "./mockRes";
+const imgBackup = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
 
 const app = express();
 app.use(express.json());
@@ -54,12 +55,11 @@ app.post(url, async (req: Request, res: Response) => {
         q: recipeRes.recipeName,
       },
     });
-
-    res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link });
+    res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link || imgBackup });
 
     // res.send({ ...recipeRes, img: imgRes });
   } catch (e) {
-    res.status(500).send(e.message);
+    res.status(500).send(e);
   }
 });
 

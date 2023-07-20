@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import {
   List,
   ListItem,
@@ -26,18 +24,11 @@ import {
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
 
-import { ResutlsRes } from "../type";
+import { ResultsRes } from "../type";
 
 export function Results() {
   const location = useLocation();
-  const formData = location.state;
-  const [results, setResults] = useState<ResutlsRes>();
-
-  useEffect(() => {
-    axios.post("/api/v1/quest", formData).then((res) => {
-      setResults(res.data);
-    });
-  }, [formData]);
+  const results: ResultsRes = location.state;
 
   return (
     <VStack>
@@ -45,14 +36,14 @@ export function Results() {
         <Card align="center" bgColor="beige">
           <CardHeader>
             <Heading size="lg" color="green.600" fontWeight="semibold" letterSpacing="wide">
-              {results?.recipeName}
+              {results.recipeName}
             </Heading>
           </CardHeader>
           <CardBody color="gray.500" fontWeight="semibold" letterSpacing="wide">
             <Flex align="center" gap={2}>
-              <Flex gap={1}>{results?.cuisineType}</Flex>|
+              <Flex gap={1}>{results.cuisineType}</Flex>|
               <Flex gap={1}>
-                <TimeIcon w={5} h={5} /> {results?.totalTime} mins
+                <TimeIcon w={5} h={5} /> {results.totalTime} mins
               </Flex>
             </Flex>
           </CardBody>
@@ -72,15 +63,15 @@ export function Results() {
               <Tbody>
                 <Tr>
                   <Td> Preparing Time</Td>
-                  <Td isNumeric> {results?.prepTime} </Td>
+                  <Td isNumeric> {results.prepTime} </Td>
                 </Tr>
                 <Tr>
                   <Td> Cooking Time </Td>
-                  <Td isNumeric> {results?.cookTime} </Td>
+                  <Td isNumeric> {results.cookTime} </Td>
                 </Tr>
                 <Tr>
                   <Td> Servings </Td>
-                  <Td isNumeric> {results?.servings} </Td>
+                  <Td isNumeric> {results.servings} </Td>
                 </Tr>
               </Tbody>
             </Table>
@@ -89,7 +80,7 @@ export function Results() {
           <Divider orientation="vertical" />
 
           <Flex direction="column" gap={5}>
-            <Image src={results?.img} alt="Food Image" objectFit="cover" />
+            <Image src={results.img} alt="Food Image" objectFit="cover" />
             <Box>
               <Heading
                 p={1}
@@ -104,7 +95,7 @@ export function Results() {
               </Heading>
 
               <List p={2}>
-                {results?.ingredients.map((el, i) => (
+                {results.ingredients.map((el: string, i: number) => (
                   <ListItem key={i}>
                     <ListIcon as={MdCircle} h={3} color="green.300" />
                     {el}
@@ -119,7 +110,7 @@ export function Results() {
               </Heading>
               <List paddingY={2} paddingX={4}>
                 <OrderedList>
-                  {results?.instructions.map((el, i) => (
+                  {results.instructions.map((el: string, i: number) => (
                     <ListItem key={i}>{el}</ListItem>
                   ))}
                 </OrderedList>

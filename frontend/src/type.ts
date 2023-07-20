@@ -43,7 +43,7 @@ export interface Answers {
   };
 }
 
-export interface ResutlsRes {
+export interface ResultsRes {
   recipeName: string;
   cuisineType: string;
   servings: number;

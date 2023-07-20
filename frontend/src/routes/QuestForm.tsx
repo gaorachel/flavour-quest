@@ -1,6 +1,27 @@
+import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
-import { Container, Heading, Button, useToast, Center, FormControl, FormLabel, HStack } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Button,
+  useToast,
+  Center,
+  FormControl,
+  FormLabel,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  Text,
+  Stack,
+} from "@chakra-ui/react";
 import { options } from "../data/questOptions";
 import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
@@ -10,9 +31,33 @@ import { NumInput } from "../components/NumInput";
 import type { Answers } from "../type";
 
 export function QuestFrom() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modalData, setModalData] = useState<string[]>();
   const navigate = useNavigate();
-
   const toast = useToast();
+
+  const handleSubmit = async (answers: Answers) => {
+    const sortedAnswers: string[] = [];
+    for (const [key, value] of Object.entries(answers)) {
+      const keyText = key.replace(/([A-Z])/g, " $1");
+      const sortedKeyText = keyText.charAt(0).toUpperCase() + keyText.slice(1);
+
+      let valueText = "";
+      if (typeof key === "string" || Array.isArray(value)) valueText = value.toString();
+      if (key === "cookingTime") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} mins`;
+      if (key === "servingSize") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} people`;
+      if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
+
+      if (value.length != 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
+    }
+    setModalData(sortedAnswers);
+
+    const res = await axios.post("/api/v1/quest", answers);
+    navigate("/results", { state: res.data });
+    // setTimeout(() => {
+    //   navigate("/results", { state: res.data });
+    // }, 50000);
+  };
 
   return (
     <>
@@ -39,9 +84,7 @@ export function QuestFrom() {
             currency: "GBP",
           },
         }}
-        onSubmit={(answers: Answers) => {
-          navigate("/results", { state: answers });
-        }}
+        onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
@@ -191,18 +234,41 @@ export function QuestFrom() {
                 w="570px"
                 bg="green.400"
                 type="submit"
-                onClick={() =>
-                  toast({
-                    title: "Form submitted.",
-                    description: "Your personal recipe is generating!",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true,
-                  })
-                }
+                marginBottom={5}
+                onClick={() => {
+                  onOpen(),
+                    toast({
+                      title: "Form submitted.",
+                      status: "success",
+                      duration: 4000,
+                      isClosable: true,
+                    });
+                }}
               >
                 Submit
               </Button>
+
+              <Modal onClose={onClose} isOpen={isOpen} isCentered size="xl">
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader> Here are your answers </ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Stack>
+                      {modalData?.map((row: string, i: number) => {
+                        return <Text key={i}>{row}</Text>;
+                      })}
+                      <br />
+                    </Stack>
+                    <Text as="i" fontSize="lg" color="green.500">
+                      Your personal recipe is generating!
+                    </Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button onClick={onClose} colorScheme="teal" size="sm" isLoading></Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Center>
           </Form>
         )}
