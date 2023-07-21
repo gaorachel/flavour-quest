@@ -28,7 +28,7 @@ import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexVal
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
-import type { Answers } from "../type";
+import type { Choices, RandomChoices } from "../type";
 
 export function QuestFrom() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,14 +36,14 @@ export function QuestFrom() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const handleSubmit = async (answers: Answers) => {
+  const displayAnswersOnModal = (answers: Choices | RandomChoices) => {
     const sortedAnswers: string[] = [];
     for (const [key, value] of Object.entries(answers)) {
       const keyText = key.replace(/([A-Z])/g, " $1");
       const sortedKeyText = keyText.charAt(0).toUpperCase() + keyText.slice(1);
 
       let valueText = "";
-      if (typeof key === "string" || Array.isArray(value)) valueText = value.toString();
+      if (Array.isArray(value)) valueText = value.toString();
       if (key === "cookingTime") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} mins`;
       if (key === "servingSize") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} people`;
       if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
@@ -51,12 +51,20 @@ export function QuestFrom() {
       if (value.length != 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
     }
     setModalData(sortedAnswers);
+  };
 
+  const sendAPIReq = async (answers: Choices | RandomChoices) => {
     const res = await axios.post("/api/v1/quest", answers);
-    navigate("/results", { state: res.data });
-    // setTimeout(() => {
-    //   navigate("/results", { state: res.data });
+    // navigate("/results", { state: res.data });
+    setTimeout(() => {
+      navigate("/results", { state: res.data });
+    }, 50000);
+  };
+  };
+  };
     // }, 50000);
+  const handleSubmit = async (answers: Choices) => {
+    displayAnswersOnModal(answers), sendAPIReq(answers);
   };
 
   return (
