@@ -161,7 +161,7 @@ export function QuestFrom() {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Flex>
+            <Flex minW="1000px">
               <Container mb={16}>
                 <Heading paddingY={5} size="xl">
                   Quests....
@@ -303,7 +303,7 @@ export function QuestFrom() {
                 </FormControl>
               </Container>
 
-              <Card maxW="sm" maxH="sm" marginRight="5vh" top="30%" position="fixed" right={0} bgColor="blue.100">
+              <Card maxW="sm" marginRight="7" marginLeft="1000" top="30%" position="fixed" right={0} bgColor="blue.100">
                 <CardHeader>
                   <Heading size="md" color="blue.700">
                     Notes
@@ -341,7 +341,7 @@ export function QuestFrom() {
                     toast({
                       title: "Form submitted.",
                       status: "success",
-                      duration: 4000,
+                      duration: 3000,
                       isClosable: true,
                     });
                 }}
@@ -350,7 +350,7 @@ export function QuestFrom() {
               </Button>
 
               <Modal onClose={onClose} isOpen={isOpen} isCentered size="xl">
-                <ModalOverlay />
+                <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(5px) " />
                 <ModalContent>
                   <ModalHeader> Here are your answers </ModalHeader>
                   <ModalCloseButton />
@@ -359,13 +359,12 @@ export function QuestFrom() {
                       {modalData?.map((row: string, i: number) => {
                         return <Text key={i}>{row}</Text>;
                       })}
-                      <br />
                     </Stack>
+                  </ModalBody>
+                  <ModalFooter justifyContent="space-between">
                     <Text as="i" fontSize="lg" color="green.500">
                       Your personal recipe is generating!
                     </Text>
-                  </ModalBody>
-                  <ModalFooter>
                     <Button colorScheme="teal" size="sm" isLoading></Button>
                   </ModalFooter>
                 </ModalContent>
