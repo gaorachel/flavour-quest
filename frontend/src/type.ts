@@ -1,48 +1,24 @@
-export interface Options {
-  preferredCuisines: string[];
-  preferredFlavours: string[];
-  spicyLevels: string[];
-  preferredStyle: string[];
-  preferredMaterials: string[];
-  preferredIngredients: string[];
-  dietaryRestrictions: string[];
-  specificGoals: string[];
-  mealSize: string[];
-  mealtime: string[];
-  cookingTime: { min: number; max: number };
-  servingSize: { min: number; max: number };
-  cookingFacilities: string[];
-  specificCookingTechniques: string[];
-  specificTextures: string[];
-  budget: {
-    unit: string[];
-    value: { min: number; max: number };
-    currency: string[];
+export interface Choices {
+  preferredCuisines?: string[] | string;
+  preferredFlavours?: string[] | string;
+  spicyLevels?: "Mild" | "Medium" | "Hot" | "Very Hot" | "Extremely";
+  preferredStyle?: string[] | string;
+  preferredMaterials?: string[] | string;
+  preferredIngredients?: string[] | string;
+  dietaryRestrictions?: string[] | string;
+  specificGoals?: string[] | string;
+  servingSize?: { min: number; max: number };
+  mealtime?: string[] | string;
+  cookingTime?: { min: number; max: number };
+  cookingFacilities?: string[] | string;
+  specificCookingTechniques?: string[] | string;
+  specificTextures?: string[] | string;
+  budget?: {
+    unit?: "per person" | "per meal";
+    value?: { min: number; max: number };
+    currency?: "GBP" | "EUR" | "USD";
   };
 }
-export interface Answers {
-  preferredCuisines: string[] | undefined;
-  preferredFlavours: string[] | undefined;
-  spicyLevels: "Mild" | "Medium" | "Hot" | "Very Hot" | "Extremely";
-  preferredStyle: string[] | undefined;
-  preferredMaterials: string[] | undefined;
-  preferredIngredients: string[] | undefined;
-  dietaryRestrictions: string[] | undefined;
-  specificGoals: string[] | undefined;
-  mealSize: string;
-  mealtime: string[] | undefined;
-  cookingTime: { min: number; max: number } | undefined;
-  servingSize: { min: number; max: number };
-  cookingFacilities: string[] | undefined;
-  specificCookingTechniques: string[] | undefined;
-  specificTextures: string[] | undefined;
-  budget: {
-    unit: string;
-    value: { min: number; max: number };
-    currency: string;
-  };
-}
-
 export interface ResultsRes {
   recipeName: string;
   cuisineType: string;
