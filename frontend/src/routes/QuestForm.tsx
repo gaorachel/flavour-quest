@@ -22,6 +22,11 @@ import {
   Text,
   Stack,
   Flex,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Highlight,
 } from "@chakra-ui/react";
 import { options } from "../data/questOptions";
 import { MultiSelect } from "../components/MultiSelect";
@@ -56,10 +61,10 @@ export function QuestFrom() {
 
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/v1/quest", answers);
-    // navigate("/results", { state: res.data });
-    setTimeout(() => {
-      navigate("/results", { state: res.data });
-    }, 50000);
+    navigate("/results", { state: res.data });
+    // setTimeout(() => {
+    //   navigate("/results", { state: res.data });
+    // }, 50000);
   };
 
   const handleSubmit = async (answers: Choices) => {
@@ -90,7 +95,7 @@ export function QuestFrom() {
     let pickedAnswers: Choices = {};
     for (const [key, value] of Object.entries(pickedOptions)) {
       if (Array.isArray(value)) {
-        const ranNum = Math.min(randomNumBasedOnInput(value), 2);
+        const ranNum = randomNumBasedOnInput(value);
         const pickedValues = new Set();
         for (let time = 0; time < ranNum; ) {
           if (value[ranNum] !== "Any") pickedValues.add(value[ranNum]);
@@ -157,7 +162,6 @@ export function QuestFrom() {
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
             <Flex>
-              <Button onClick={() => handleClick(options)}> Random </Button>
               <Container mb={16}>
                 <Heading paddingY={5} size="xl">
                   Quests....
@@ -298,6 +302,32 @@ export function QuestFrom() {
                   />
                 </FormControl>
               </Container>
+
+              <Card maxW="sm" maxH="sm" marginRight="5vh" top="30%" position="fixed" right={0} bgColor="blue.100">
+                <CardHeader>
+                  <Heading size="md" color="blue.700">
+                    Notes
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>
+                    Hey! you do NOT need to answer ALL the questions before submitting your quests.
+                    <br />
+                    <br />
+                  </Text>
+                  <Highlight
+                    query="random recipe"
+                    styles={{ px: "1", py: "1", bg: "orange.200", rounded: "5", fontWeight: "normal" }}
+                  >
+                    You can also click the button below to get a random recipe.
+                  </Highlight>
+                </CardBody>
+                <CardFooter>
+                  <Button onClick={() => handleClick(options)} colorScheme="blue">
+                    YOLO
+                  </Button>
+                </CardFooter>
+              </Card>
             </Flex>
 
             <Center>
