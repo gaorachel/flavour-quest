@@ -21,6 +21,7 @@ import {
   useDisclosure,
   Text,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { options } from "../data/questOptions";
 import { MultiSelect } from "../components/MultiSelect";
@@ -60,11 +61,71 @@ export function QuestFrom() {
       navigate("/results", { state: res.data });
     }, 50000);
   };
-  };
-  };
-    // }, 50000);
+
   const handleSubmit = async (answers: Choices) => {
     displayAnswersOnModal(answers), sendAPIReq(answers);
+  };
+
+  const randomNumBasedOnInput = (data: string[] | object) => {
+    let len = 0;
+    if (typeof data === "object") len = Object.keys(data).length;
+    if (Array.isArray(data)) len = data.length;
+
+    return Math.max(Math.floor(Math.random() * len), 5); // displaying more than 6 options looks bad
+  };
+
+  const handleClick = (options: Choices) => {
+    onOpen(); // show modal on the screen
+
+    const ranSelectTimes = randomNumBasedOnInput(options) + 2; // + 2 is to select more questions
+    let pickedOptions: Choices = {};
+    for (let time = 0; time < ranSelectTimes; ) {
+      const ranNum = randomNumBasedOnInput(options);
+      const pickedEl = Object.fromEntries([Object.entries(options)[ranNum]]);
+
+      pickedOptions = { ...pickedOptions, ...pickedEl };
+      time++;
+    }
+
+    let pickedAnswers: Choices = {};
+    for (const [key, value] of Object.entries(pickedOptions)) {
+      if (Array.isArray(value)) {
+        const ranNum = Math.min(randomNumBasedOnInput(value), 2);
+        const pickedValues = new Set();
+        for (let time = 0; time < ranNum; ) {
+          if (value[ranNum] !== "Any") pickedValues.add(value[ranNum]);
+
+          pickedAnswers = { [key]: [...pickedValues] };
+          time++;
+        }
+      }
+
+      if (key === "servingSize" || key === "cookingTime") {
+        const ranNum = Math.random() * 10;
+        const min = 1 * ranNum;
+        const max = 10 * ranNum;
+
+        pickedAnswers = { [key]: { min, max } };
+      }
+
+      if (key === "budget") {
+        const ranNum = Math.random() * 10;
+        const unit = value.unit[Math.round(Math.random())];
+        const min = value.value.min * ranNum;
+        const max = value.value.max * ranNum;
+        const currency = value.currency[Math.floor(Math.random() * 3)];
+
+        pickedAnswers[key] = {
+          unit,
+          value: {
+            min,
+            max,
+          },
+          currency,
+        };
+      }
+    }
+    handleSubmit(pickedOptions);
   };
 
   return (
@@ -95,146 +156,149 @@ export function QuestFrom() {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Container mb={16}>
-              <Heading paddingY={5} size="xl">
-                Quests....
-              </Heading>
-              <Field
-                name="preferredCuisines"
-                formLabel="What are your preferred cuisines?"
-                component={MultiSelect}
-                optionArr={options.preferredCuisines}
-              />
-              <Field
-                name="preferredFlavours"
-                formLabel="What are your preferred flavours?"
-                component={MultiSelect}
-                optionArr={options.preferredFlavours}
-              />
-
-              <>
-                <FormLabel> How spicy would you like? </FormLabel>
-                <Center>
-                  <Field
-                    name="spicyLevels"
-                    component={RadioGroup}
-                    optionArr={options.spicyLevels}
-                    defaultValue={options.spicyLevels[2]}
-                    borderRadius="full"
-                  />
-                </Center>
-              </>
-
-              <Field
-                name="preferredStyle"
-                formLabel="What are your preferred styles?"
-                component={MultiSelect}
-                optionArr={options.preferredStyle}
-              />
-
-              <Field
-                name="preferredMaterials"
-                formLabel="What are your preferred materials?"
-                component={MultiSelect}
-                optionArr={options.preferredMaterials}
-              />
-
-              <Field
-                name="preferredIngredients"
-                formLabel="What are your preferred ingredients?"
-                component={MultiSelect}
-                optionArr={options.preferredIngredients}
-              />
-
-              <Field
-                name="dietaryRestrictions"
-                formLabel="Do you have any dietary restrictions or allergies?"
-                component={MultiSelect}
-                optionArr={options.dietaryRestrictions}
-              />
-
-              <Field
-                name="specificGoals"
-                formLabel="Do you have any specific goals related to your meals?"
-                component={MultiSelect}
-                optionArr={options.specificGoals}
-              />
-
-              <Field
-                name="servingSize"
-                formLabel="How many people will you be cooking for?"
-                component={NumInput}
-                min={options.servingSize.min}
-                max={options.servingSize.max}
-                defaultValue={[1, 3]}
-              />
-
-              <Field
-                name="mealtime"
-                formLabel="What are your preferred meal time?"
-                component={MultiSelect}
-                optionArr={options.mealtime}
-              />
-
-              <Field
-                name="cookingTime"
-                formLabel="How much time (minutes) would you prefer to spend on cooking/preparing the meal?"
-                component={RangeSliderWithIndexValue}
-                defaultValue={[options.cookingTime.min, options.cookingTime.max]}
-                min={0}
-                max={120}
-              />
-
-              <Field
-                name="cookingFacilities"
-                formLabel="What cooking facilities do you have available?"
-                component={MultiSelect}
-                optionArr={options.cookingFacilities}
-              />
-
-              <Field
-                name="specificCookingTechniques"
-                formLabel="Are there any specific cooking techniques you enjoy or prefer?"
-                component={MultiSelect}
-                optionArr={options.specificCookingTechniques}
-              />
-
-              <Field
-                name="specificTextures"
-                formLabel="Are there any specific textures or consistencies you enjoy?"
-                component={MultiSelect}
-                optionArr={options.specificTextures}
-              />
-
-              <FormControl>
-                <FormLabel>What is your budget?</FormLabel>
-
-                <HStack alignItems="center" justify="space-between" p={1}>
-                  <Field
-                    name="budget.currency"
-                    component={RadioGroup}
-                    optionArr={options.budget.currency}
-                    defaultValue={options.budget.currency[0]}
-                    borderRadius="full"
-                  />
-
-                  <Field
-                    name="budget.unit"
-                    component={RadioGroup}
-                    optionArr={options.budget.unit}
-                    defaultValue={options.budget.unit[0]}
-                    space={0}
-                  />
-                </HStack>
+            <Flex>
+              <Button onClick={() => handleClick(options)}> Random </Button>
+              <Container mb={16}>
+                <Heading paddingY={5} size="xl">
+                  Quests....
+                </Heading>
                 <Field
-                  name="budget.value"
-                  component={RangeSliderWithIndexValue}
-                  defaultValue={[options.budget.value.min, options.budget.value.max]}
-                  min={0}
-                  max={200}
+                  name="preferredCuisines"
+                  formLabel="What are your preferred cuisines?"
+                  component={MultiSelect}
+                  optionArr={options.preferredCuisines}
                 />
-              </FormControl>
-            </Container>
+                <Field
+                  name="preferredFlavours"
+                  formLabel="What are your preferred flavours?"
+                  component={MultiSelect}
+                  optionArr={options.preferredFlavours}
+                />
+
+                <>
+                  <FormLabel> How spicy would you like? </FormLabel>
+                  <Center>
+                    <Field
+                      name="spicyLevels"
+                      component={RadioGroup}
+                      optionArr={options.spicyLevels}
+                      defaultValue={options.spicyLevels[2]}
+                      borderRadius="full"
+                    />
+                  </Center>
+                </>
+
+                <Field
+                  name="preferredStyle"
+                  formLabel="What are your preferred styles?"
+                  component={MultiSelect}
+                  optionArr={options.preferredStyle}
+                />
+
+                <Field
+                  name="preferredMaterials"
+                  formLabel="What are your preferred materials?"
+                  component={MultiSelect}
+                  optionArr={options.preferredMaterials}
+                />
+
+                <Field
+                  name="preferredIngredients"
+                  formLabel="What are your preferred ingredients?"
+                  component={MultiSelect}
+                  optionArr={options.preferredIngredients}
+                />
+
+                <Field
+                  name="dietaryRestrictions"
+                  formLabel="Do you have any dietary restrictions or allergies?"
+                  component={MultiSelect}
+                  optionArr={options.dietaryRestrictions}
+                />
+
+                <Field
+                  name="specificGoals"
+                  formLabel="Do you have any specific goals related to your meals?"
+                  component={MultiSelect}
+                  optionArr={options.specificGoals}
+                />
+
+                <Field
+                  name="servingSize"
+                  formLabel="How many people will you be cooking for?"
+                  component={NumInput}
+                  min={options.servingSize.min}
+                  max={options.servingSize.max}
+                  defaultValue={[1, 3]}
+                />
+
+                <Field
+                  name="mealtime"
+                  formLabel="What are your preferred meal time?"
+                  component={MultiSelect}
+                  optionArr={options.mealtime}
+                />
+
+                <Field
+                  name="cookingTime"
+                  formLabel="How much time (minutes) would you prefer to spend on cooking/preparing the meal?"
+                  component={RangeSliderWithIndexValue}
+                  defaultValue={[options.cookingTime.min, options.cookingTime.max]}
+                  min={0}
+                  max={120}
+                />
+
+                <Field
+                  name="cookingFacilities"
+                  formLabel="What cooking facilities do you have available?"
+                  component={MultiSelect}
+                  optionArr={options.cookingFacilities}
+                />
+
+                <Field
+                  name="specificCookingTechniques"
+                  formLabel="Are there any specific cooking techniques you enjoy or prefer?"
+                  component={MultiSelect}
+                  optionArr={options.specificCookingTechniques}
+                />
+
+                <Field
+                  name="specificTextures"
+                  formLabel="Are there any specific textures or consistencies you enjoy?"
+                  component={MultiSelect}
+                  optionArr={options.specificTextures}
+                />
+
+                <FormControl>
+                  <FormLabel>What is your budget?</FormLabel>
+
+                  <HStack alignItems="center" justify="space-between" p={1}>
+                    <Field
+                      name="budget.currency"
+                      component={RadioGroup}
+                      optionArr={options.budget.currency}
+                      defaultValue={options.budget.currency[0]}
+                      borderRadius="full"
+                    />
+
+                    <Field
+                      name="budget.unit"
+                      component={RadioGroup}
+                      optionArr={options.budget.unit}
+                      defaultValue={options.budget.unit[0]}
+                      space={0}
+                    />
+                  </HStack>
+                  <Field
+                    name="budget.value"
+                    component={RangeSliderWithIndexValue}
+                    defaultValue={[options.budget.value.min, options.budget.value.max]}
+                    min={0}
+                    max={200}
+                  />
+                </FormControl>
+              </Container>
+            </Flex>
 
             <Center>
               <Button
@@ -272,7 +336,7 @@ export function QuestFrom() {
                     </Text>
                   </ModalBody>
                   <ModalFooter>
-                    <Button onClick={onClose} colorScheme="teal" size="sm" isLoading></Button>
+                    <Button colorScheme="teal" size="sm" isLoading></Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
