@@ -28,7 +28,7 @@ import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexVal
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
-import type { Choices, RandomChoices } from "../type";
+import type { Choices } from "../type";
 
 export function QuestFrom() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,7 +36,7 @@ export function QuestFrom() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const displayAnswersOnModal = (answers: Choices | RandomChoices) => {
+  const displayAnswersOnModal = (answers: Choices) => {
     const sortedAnswers: string[] = [];
     for (const [key, value] of Object.entries(answers)) {
       const keyText = key.replace(/([A-Z])/g, " $1");
@@ -53,7 +53,7 @@ export function QuestFrom() {
     setModalData(sortedAnswers);
   };
 
-  const sendAPIReq = async (answers: Choices | RandomChoices) => {
+  const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/v1/quest", answers);
     // navigate("/results", { state: res.data });
     setTimeout(() => {
@@ -79,10 +79,9 @@ export function QuestFrom() {
           preferredIngredients: [],
           dietaryRestrictions: [],
           specificGoals: [],
-          mealSize: "",
+          servingSize: { min: 1, max: 3 },
           mealtime: [],
           cookingTime: { min: 15, max: 60 },
-          servingSize: { min: 1, max: 3 },
           cookingFacilities: [],
           specificCookingTechniques: [],
           specificTextures: [],
