@@ -32,13 +32,15 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
+import { useRouter } from "next/navigation";
 
 import type { Choices } from "../type";
+import { withRouter } from "next/router";
 
-export default function Home() {
+function Home(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalData, setModalData] = useState<string[]>();
-  // const navigate = useNavigate();
+  const router = useRouter();
   const toast = useToast();
 
   const displayAnswersOnModal = (answers: Choices) => {
@@ -60,7 +62,14 @@ export default function Home() {
   };
 
   const sendAPIReq = async (answers: Choices | Choices) => {
-    const res = await axios.post("/api/v1/quest", answers);
+    // const res = await axios.post("/api/v1/quest", answers);
+
+    const res = { data: "testing" };
+    props.router.push({
+      pathname: "/results",
+      query: { data: res.data },
+    });
+    //
     // navigate("/results", { state: res.data });
     // setTimeout(() => {
     //   navigate("/results", { state: res.data });
@@ -126,7 +135,6 @@ export default function Home() {
         const min = Math.ceil(value.min * ranNum * 0.1);
         const max = Math.ceil(value.max * ranNum * 0.04);
 
-        console.log("min", min, "max", max);
         pickedAnswers = { ...pickedAnswers, [key]: { min, max } };
       }
 
@@ -395,3 +403,5 @@ export default function Home() {
     </>
   );
 }
+
+export default withRouter(Home);
