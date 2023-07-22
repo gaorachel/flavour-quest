@@ -1,4 +1,4 @@
-import { useRouter, withRouter } from "next/router";
+import { withRouter } from "next/router";
 import {
   List,
   ListItem,
@@ -24,15 +24,10 @@ import {
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
 
-import { ResultsRes } from "../type";
-import { useEffect } from "react";
+import type { ResultsRes } from "../type";
 
-function Results(props) {
-  const router = useRouter();
-  // const results = props.router.query.data;
-  const results = null;
-
-  console.log(props);
+function Results(props: ResultsRes) {
+  const results = JSON.parse(props.router.query.data);
   if (!results) return null;
 
   return (

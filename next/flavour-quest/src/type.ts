@@ -20,6 +20,7 @@ export interface Choices {
   };
 }
 export interface ResultsRes {
+  router: any;
   recipeName: string;
   cuisineType: string;
   servings: number;
@@ -29,4 +30,15 @@ export interface ResultsRes {
   ingredients: string[];
   instructions: string[];
   img: string;
+}
+
+export interface Format {
+  recipeName: string;
+  cuisineType: string;
+  servings: number;
+  prepTime: number;
+  cookTime: number;
+  totalTime: number;
+  ingredients: string[];
+  instructions: string[];
 }

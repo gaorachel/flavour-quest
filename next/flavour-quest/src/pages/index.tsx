@@ -33,11 +33,11 @@ import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexVal
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 import { useRouter } from "next/navigation";
-
-import type { Choices } from "../type";
 import { withRouter } from "next/router";
 
-function Home(props) {
+import type { Choices, ResultsRes } from "../type";
+
+function Home(props: ResultsRes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalData, setModalData] = useState<string[]>();
   const router = useRouter();
@@ -62,17 +62,16 @@ function Home(props) {
   };
 
   const sendAPIReq = async (answers: Choices | Choices) => {
-    // const res = await axios.post("/api/v1/quest", answers);
-
-    const res = { data: "testing" };
+    const res = await axios.post("/api/quest", answers);
     props.router.push({
       pathname: "/results",
-      query: { data: res.data },
+      query: { data: JSON.stringify(res.data) },
     });
-    //
-    // navigate("/results", { state: res.data });
     // setTimeout(() => {
-    //   navigate("/results", { state: res.data });
+    //   props.router.push({
+    //     pathname: "/results",
+    //     query: { data: JSON.stringify(res.data) },
+    //   });
     // }, 50000);
   };
 

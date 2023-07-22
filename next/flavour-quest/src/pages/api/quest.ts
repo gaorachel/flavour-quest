@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Choices, Format } from "@/type";
-import { recipeRes } from "./_mockRes";
+import { mockRes } from "./_mockRes";
 import axios from "axios";
 import { askGPT } from "./_openai";
 
@@ -32,6 +32,8 @@ const resExample = {
 
 export default async function questHandler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
+    if (process.env.NODE_ENV === "development") return res.send({ ...mockRes, img: imgBackup });
+
     const formData: Choices = req.body;
     const recipeRes: Format = await askGPT(formData, resExample);
     const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
@@ -47,8 +49,6 @@ export default async function questHandler(req: NextApiRequest, res: NextApiResp
       },
     });
     res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link || imgBackup });
-
-    // res.send({ ...recipeRes, img: imgBackup });
   } catch (e) {
     res.status(500).send(e);
   }
