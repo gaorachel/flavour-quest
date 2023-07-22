@@ -1,7 +1,7 @@
 export interface Choices {
   preferredCuisines?: string[] | string;
   preferredFlavours?: string[] | string;
-  spicyLevels?: "Mild" | "Medium" | "Hot" | "Very Hot" | "Extremely";
+  spicyLevels?: string[] | string;
   preferredStyle?: string[] | string;
   preferredMaterials?: string[] | string;
   preferredIngredients?: string[] | string;
@@ -14,9 +14,9 @@ export interface Choices {
   specificCookingTechniques?: string[] | string;
   specificTextures?: string[] | string;
   budget?: {
-    unit?: "per person" | "per meal";
+    unit?: string[] | string;
     value?: { min: number; max: number };
-    currency?: "GBP" | "EUR" | "USD";
+    currency?: string[] | string;
   };
 }
 export interface ResultsRes {

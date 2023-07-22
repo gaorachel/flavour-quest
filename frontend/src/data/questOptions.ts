@@ -1,6 +1,4 @@
-import type { Options } from "../type";
-
-export const options: Options = {
+export const options = {
   preferredCuisines: [
     "Any",
     "Chinese",
@@ -44,10 +42,9 @@ export const options: Options = {
     "Vegan",
   ],
   preferredMaterials: ["Potato", "Tomato", "Aubergine", "Pork", "Beef", "Chicken", "Lamp", "Egg"],
-  preferredIngredients: ["Cumin", "Coriander", "Black Pepper", "Basil", "Parsley", "Nuts"],
-  dietaryRestrictions: ["Cumin", "Coriander", "Nuts"],
+  preferredIngredients: ["Cumin", "Black Pepper", "Basil", "Parsley"],
+  dietaryRestrictions: ["Coriander", "Nuts", "Mango"],
   specificGoals: ["Weight lost", "Low carb", "Low fat", "More vegetables", "More protein"],
-  mealSize: ["Little", "Small", "Regular", "Large", "Super Large"],
   mealtime: ["Breakfast", "Lunch", "Dinner", "Snacks"],
   cookingTime: { min: 15, max: 60 },
   servingSize: { min: 1, max: 30 },
