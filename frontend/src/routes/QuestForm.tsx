@@ -62,10 +62,10 @@ export function QuestFrom() {
 
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/v1/quest", answers);
-    // navigate("/results", { state: res.data });
-    setTimeout(() => {
-      navigate("/results", { state: res.data });
-    }, 50000);
+    navigate("/results", { state: res.data });
+    // setTimeout(() => {
+    //   navigate("/results", { state: res.data });
+    // }, 50000);
   };
 
   const handleSubmit = async (answers: Choices) => {
@@ -88,11 +88,16 @@ export function QuestFrom() {
     onOpen(); // show modal on the screen
 
     let pickedOptions: Choices = {};
-    for (let time = 0; time < randIntBetween(3, 9); ) {
+    const randIndices: number[] = [];
+    for (let time = 0; time < randIntBetween(5, 8); ) {
       const randIdx = randIntBy(options);
-      const pickedEl = Object.fromEntries([Object.entries(options)[randIdx]]);
 
-      pickedOptions = { ...pickedOptions, ...pickedEl };
+      if (!randIndices.includes(randIdx)) {
+        const pickedEl = Object.fromEntries([Object.entries(options)[randIdx]]);
+        pickedOptions = { ...pickedOptions, ...pickedEl };
+        randIndices.push(randIdx);
+      }
+
       time++;
     }
 
@@ -102,6 +107,7 @@ export function QuestFrom() {
         const randIdx = randIntBetween(0, 4);
 
         pickedAnswers = { ...pickedAnswers, [key]: value[randIdx] };
+        continue;
       }
 
       if (Array.isArray(value)) {
@@ -116,10 +122,12 @@ export function QuestFrom() {
       }
 
       if (key === "servingSize" || key === "cookingTime") {
+        // below are just some random params
         const ranNum = randIntBetween(1, 5);
-        const min = 1 * ranNum;
-        const max = 2 * ranNum;
+        const min = Math.ceil(value.min * ranNum * 0.1);
+        const max = Math.ceil(value.max * ranNum * 0.04);
 
+        console.log("min", min, "max", max);
         pickedAnswers = { ...pickedAnswers, [key]: { min, max } };
       }
 
@@ -193,15 +201,15 @@ export function QuestFrom() {
 
                 <>
                   <FormLabel> How spicy would you like? </FormLabel>
-                  {/* <Center> */}
-                  <Field
-                    name="spicyLevels"
-                    component={RadioGroup}
-                    optionArr={options.spicyLevels}
-                    defaultValue={options.spicyLevels[2]}
-                    borderRadius="full"
-                  />
-                  {/* </Center> */}
+                  <Center>
+                    <Field
+                      name="spicyLevels"
+                      component={RadioGroup}
+                      optionArr={options.spicyLevels}
+                      defaultValue={options.spicyLevels[2]}
+                      borderRadius="full"
+                    />
+                  </Center>
                 </>
 
                 <Field
