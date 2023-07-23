@@ -1,8 +1,12 @@
 # Flavour Quest - AI-Powered Recipe Recommendation Web App
 
+
+
 ## Overview
 
-Flavour Quest is an interactive web application that utilises AI to recommend personalised recipes based on users' flavour preferences. It leverages the ChatGPT language model to generate unique recipes.
+[Flavour Quest](https://vercel.com/gaorachel/flavour-quest) is an interactive web application that utilises AI to recommend personalised recipes based on users' flavour preferences. It leverages the ChatGPT language model to generate unique recipes.
+
+
 
 ## Features
 
@@ -14,11 +18,11 @@ Flavour Quest is an interactive web application that utilises AI to recommend pe
 
 ## Technologies Used
 
-- Front-End: HTML, CSS, JavaScript (React.js)
-- Back-End: Node.js, Express.js
+- Front-End: TypeScript, React, Next.js
+- Back-End: Next.js
 - AI Language Model: ChatGPT (OpenAI)
 - External APIs: Google Search API (for images)
-
+  
 ## Demo
 <img width="1504" alt="form-questions" src="https://github.com/gaorachel/flavour-quest/assets/65629022/d7493353-e728-4017-9558-685be13fbdf4">
 <img width="1509" alt="choice-summary-modal" src="https://github.com/gaorachel/flavour-quest/assets/65629022/9f7b0bd8-9fe0-4c73-b2d4-06d7c4e651cc">
