@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import {
   Container,
@@ -33,13 +32,15 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
+import { useRouter } from "next/navigation";
+import { withRouter } from "next/router";
 
-import type { Choices } from "../type";
+import type { Choices, ResultsRes } from "../type";
 
-export function QuestFrom() {
+function Home(props: ResultsRes) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalData, setModalData] = useState<string[]>();
-  const navigate = useNavigate();
+  const router = useRouter();
   const toast = useToast();
 
   const displayAnswersOnModal = (answers: Choices) => {
@@ -61,10 +62,16 @@ export function QuestFrom() {
   };
 
   const sendAPIReq = async (answers: Choices | Choices) => {
-    const res = await axios.post("/api/v1/quest", answers);
-    navigate("/results", { state: res.data });
+    const res = await axios.post("/api/quest", answers);
+    props.router.push({
+      pathname: "/results",
+      query: { data: JSON.stringify(res.data) },
+    });
     // setTimeout(() => {
-    //   navigate("/results", { state: res.data });
+    //   props.router.push({
+    //     pathname: "/results",
+    //     query: { data: JSON.stringify(res.data) },
+    //   });
     // }, 50000);
   };
 
@@ -127,7 +134,6 @@ export function QuestFrom() {
         const min = Math.ceil(value.min * ranNum * 0.1);
         const max = Math.ceil(value.max * ranNum * 0.04);
 
-        console.log("min", min, "max", max);
         pickedAnswers = { ...pickedAnswers, [key]: { min, max } };
       }
 
@@ -396,3 +402,5 @@ export function QuestFrom() {
     </>
   );
 }
+
+export default withRouter(Home);

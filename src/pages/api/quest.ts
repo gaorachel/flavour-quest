@@ -1,18 +1,10 @@
-import express from "express";
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { Choices, Format } from "@/type";
+import { mockRes } from "./_mockRes";
 import axios from "axios";
-import { askGPT } from "./openai";
+import { askGPT } from "./_openai";
 
-import { Answers, Format } from "./type";
-
-// import { recipeRes } from "./mockRes";
 const imgBackup = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
-
-const app = express();
-app.use(express.json());
-
-const url = "/api/v1/quest";
-
 const resExample = {
   recipeName: "Spaghetti Carbonara",
   cuisineType: "Italian",
@@ -38,11 +30,12 @@ const resExample = {
   ],
 };
 
-app.post(url, async (req: Request, res: Response) => {
+export default async function questHandler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
-    const formData: Answers = req.body;
-    const recipeRes: Format = await askGPT(formData, resExample);
+    if (process.env.NODE_ENV === "development") return res.send({ ...mockRes, img: imgBackup });
 
+    const formData: Choices = req.body;
+    const recipeRes: Format = await askGPT(formData, resExample);
     const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
       params: {
         key: process.env.GOOGLE_SEARCH_API_KEY,
@@ -56,14 +49,7 @@ app.post(url, async (req: Request, res: Response) => {
       },
     });
     res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link || imgBackup });
-
-    // res.send({ ...recipeRes, img: imgRes });
   } catch (e) {
     res.status(500).send(e);
   }
-});
-
-const port = 5001;
-app.listen(port, () => {
-  console.log(`App running on port ${port}.`);
-});
+}

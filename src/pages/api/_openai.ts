@@ -1,13 +1,8 @@
-import * as dotenv from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
 
-import { Answers, Format } from "./type";
+import { Choices, Format } from "@/type";
 
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config();
-}
-
-export async function askGPT(data: Answers, format: Format) {
+export async function askGPT(data: Choices, format: Format) {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });

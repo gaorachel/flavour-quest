@@ -1,4 +1,4 @@
-export const recipeRes = {
+export const mockRes = {
   recipeName: "Lemon Garlic Roasted Chicken",
   cuisineType: "American",
   servings: 4,

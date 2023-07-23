@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { withRouter } from "next/router";
 import {
   List,
   ListItem,
@@ -24,11 +24,12 @@ import {
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
 
-import { ResultsRes } from "../type";
+import type { ResultsRes } from "../type";
 
-export function Results() {
-  const location = useLocation();
-  const results: ResultsRes = location.state;
+function Results(props: ResultsRes) {
+  if (!props.router?.query?.data) return null;
+  const results = JSON.parse(props.router.query.data);
+  if (!results) return null;
 
   return (
     <VStack>
@@ -122,3 +123,5 @@ export function Results() {
     </VStack>
   );
 }
+
+export default withRouter(Results);

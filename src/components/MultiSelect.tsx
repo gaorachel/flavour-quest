@@ -35,6 +35,8 @@ export function MultiSelect({
       <FormControl>
         <FormLabel>{formLabel}</FormLabel>
         <Select
+          // id={JSON.stringify(optionArr)}
+          // instanceId={JSON.stringify(optionArr)}
           isMulti
           variant="flushed"
           tagVariant="subtle"

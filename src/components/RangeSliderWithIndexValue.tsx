@@ -2,7 +2,6 @@ import { Flex, Box, Text, chakra, useRangeSlider, FormLabel } from "@chakra-ui/r
 import { FieldProps } from "formik";
 interface ThumbProps {
   value: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   thumbProps: any;
   thumbIndex: number;
   bgColor?: string;
