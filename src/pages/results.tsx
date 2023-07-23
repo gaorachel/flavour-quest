@@ -27,6 +27,7 @@ import { MdCircle } from "react-icons/md";
 import type { ResultsRes } from "../type";
 
 function Results(props: ResultsRes) {
+  if (!props.router?.query?.data) return null;
   const results = JSON.parse(props.router.query.data);
   if (!results) return null;
 
