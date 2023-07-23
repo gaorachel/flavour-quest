@@ -18,10 +18,10 @@
 
 ## Technologies Used
 
-- Front-End: TypeScript, React, Next.js
-- Back-End: Next.js
-- AI Language Model: ChatGPT (OpenAI)
-- External APIs: Google Search API (for images)
+- TypeScript, React, Next.js
+- ChatGPT (OpenAI)
+- Google Search API (for images)
+- Chakra UI
   
 ## Preview
 <img width="1504" alt="form-questions" src="https://github.com/gaorachel/flavour-quest/assets/65629022/d7493353-e728-4017-9558-685be13fbdf4">
