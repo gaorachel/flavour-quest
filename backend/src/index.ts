@@ -2,10 +2,10 @@ import express from "express";
 import { Request, Response } from "express";
 import axios from "axios";
 import { askGPT } from "./openai";
+import { mockRes } from "./mockRes";
 
 import { Answers, Format } from "./type";
 
-// import { recipeRes } from "./mockRes";
 const imgBackup = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
 
 const app = express();
@@ -40,6 +40,8 @@ const resExample = {
 
 app.post(url, async (req: Request, res: Response) => {
   try {
+    if (process.env.NODE_ENV === "development") return res.send({ ...mockRes, img: imgBackup });
+
     const formData: Answers = req.body;
     const recipeRes: Format = await askGPT(formData, resExample);
 
@@ -56,8 +58,6 @@ app.post(url, async (req: Request, res: Response) => {
       },
     });
     res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link || imgBackup });
-
-    // res.send({ ...recipeRes, img: imgRes });
   } catch (e) {
     res.status(500).send(e);
   }

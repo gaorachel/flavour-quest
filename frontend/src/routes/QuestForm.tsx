@@ -62,10 +62,13 @@ export function QuestFrom() {
 
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/v1/quest", answers);
+
+    if (process.env.NODE_ENV === "development")
+      return setTimeout(() => {
+        navigate("/results", { state: res.data });
+      }, 3000);
+
     navigate("/results", { state: res.data });
-    // setTimeout(() => {
-    //   navigate("/results", { state: res.data });
-    // }, 50000);
   };
 
   const handleSubmit = async (answers: Choices) => {
@@ -127,7 +130,6 @@ export function QuestFrom() {
         const min = Math.ceil(value.min * ranNum * 0.1);
         const max = Math.ceil(value.max * ranNum * 0.04);
 
-        console.log("min", min, "max", max);
         pickedAnswers = { ...pickedAnswers, [key]: { min, max } };
       }
 
