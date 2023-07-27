@@ -19,18 +19,6 @@ export interface Choices {
     currency?: string[] | string;
   };
 }
-export interface ResultsRes {
-  router: any;
-  recipeName: string;
-  cuisineType: string;
-  servings: number;
-  prepTime: number;
-  cookTime: number;
-  totalTime: number;
-  ingredients: string[];
-  instructions: string[];
-  img: string;
-}
 
 export interface Format {
   recipeName: string;

@@ -32,16 +32,16 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
-import { useRouter } from "next/navigation";
-import { withRouter } from "next/router";
+// import { withRouter, NextRouter } from "next/router";
 
-import type { Choices, ResultsRes } from "../type";
+import type { Choices } from "../type";
+import { useRouter } from "next/router";
 
-function Home(props: ResultsRes) {
+export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalData, setModalData] = useState<string[]>();
-  const router = useRouter();
   const toast = useToast();
+  const router = useRouter();
 
   const displayAnswersOnModal = (answers: Choices) => {
     const sortedAnswers: string[] = [];
@@ -63,7 +63,7 @@ function Home(props: ResultsRes) {
 
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/quest", answers);
-    props.router.push({
+    router.push({
       pathname: "/results",
       query: { data: JSON.stringify(res.data) },
     });
@@ -402,5 +402,3 @@ function Home(props: ResultsRes) {
     </>
   );
 }
-
-export default withRouter(Home);

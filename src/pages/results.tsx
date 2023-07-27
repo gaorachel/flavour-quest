@@ -1,4 +1,4 @@
-import { withRouter } from "next/router";
+import { useRouter, withRouter } from "next/router";
 import {
   List,
   ListItem,
@@ -24,12 +24,13 @@ import {
 import { TimeIcon } from "@chakra-ui/icons";
 import { MdCircle } from "react-icons/md";
 
-import type { ResultsRes } from "../type";
-
-function Results(props: ResultsRes) {
-  if (!props.router?.query?.data) return null;
-  const results = JSON.parse(props.router.query.data);
+export default function Results() {
+  const router = useRouter();
+  if (!router?.query?.data) return null;
+  const results = JSON.parse(router.query.data as string);
   if (!results) return null;
+
+  console.log(results);
 
   return (
     <VStack>
@@ -123,5 +124,3 @@ function Results(props: ResultsRes) {
     </VStack>
   );
 }
-
-export default withRouter(Results);
