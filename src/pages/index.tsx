@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import {
@@ -32,16 +33,14 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
-// import { withRouter, NextRouter } from "next/router";
 
 import type { Choices } from "../type";
-import { useRouter } from "next/router";
 
 export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalData, setModalData] = useState<string[]>();
-  const toast = useToast();
   const router = useRouter();
+  const toast = useToast();
 
   const displayAnswersOnModal = (answers: Choices) => {
     const sortedAnswers: string[] = [];
