@@ -4,7 +4,7 @@ import { mockRes } from "./_mockRes";
 import axios from "axios";
 import { askGPT } from "./_openai";
 
-const imgBackup = "https://shewearsmanyhats.com/wp-content/uploads/2015/12/roasted-garlic-lemon-chicken-recipe-1.jpg";
+const imgBackup = "https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/roast_fore_rib_of_beef_19243_16x9.jpg";
 const resExample = {
   recipeName: "Spaghetti Carbonara",
   cuisineType: "Italian",

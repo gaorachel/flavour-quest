@@ -55,23 +55,18 @@ export default function QuestForm() {
       if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
       if (key === "spicyLevels") valueText = value;
 
-      if (value.length != 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
+      if (value.length !== 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
     }
     setModalData(sortedAnswers);
   };
 
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/quest", answers);
+
     router.push({
       pathname: "/results",
       query: { data: JSON.stringify(res.data) },
     });
-    // setTimeout(() => {
-    //   props.router.push({
-    //     pathname: "/results",
-    //     query: { data: JSON.stringify(res.data) },
-    //   });
-    // }, 50000);
   };
 
   const handleSubmit = async (answers: Choices) => {

@@ -1,4 +1,4 @@
-import router from "next/router";
+import { useRouter } from "next/router";
 import {
   List,
   ListItem,
@@ -27,6 +27,7 @@ import { MdCircle } from "react-icons/md";
 import type { ResultsRes } from "../type";
 
 export default function Results() {
+  const router = useRouter();
   if (!router?.query?.data) return null;
   const results: ResultsRes = JSON.parse(router.query.data as string);
   if (!results) return null;
@@ -53,7 +54,7 @@ export default function Results() {
 
       <Box width="1000px">
         <Flex gap={5} height="container.lg">
-          <TableContainer width="500px">
+          <TableContainer width="250px">
             <Table variant="simple" size="sm" bg="beige" color="gray.500" fontWeight="semibold" letterSpacing="wide">
               <Thead>
                 <Tr>
@@ -80,18 +81,10 @@ export default function Results() {
 
           <Divider orientation="vertical" />
 
-          <Flex direction="column" gap={5}>
+          <Flex direction="column" gap={5} w="750px">
             <Image src={results.img} alt="Food Image" objectFit="cover" />
             <Box>
-              <Heading
-                p={1}
-                size="md"
-                color="green.600"
-                bgColor="beige"
-                fontWeight="semibold"
-                letterSpacing="wide"
-                w="700px"
-              >
+              <Heading p={1} size="md" color="green.600" bgColor="beige" fontWeight="semibold" letterSpacing="wide">
                 Ingredients
               </Heading>
 
