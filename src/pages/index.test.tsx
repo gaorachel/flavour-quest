@@ -1,19 +1,19 @@
-import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import { ChakraProvider } from '@chakra-ui/react';
-import QuestForm from '.';
+import { render, screen } from "@testing-library/react";
+import user from "@testing-library/user-event";
+import { ChakraProvider } from "@chakra-ui/react";
+import QuestForm from ".";
+import { matchMediaMock } from "../../mocks/matchMediaMock";
 
-jest.mock('next/router', () => require('next-router-mock'));
+jest.mock("next/router", () => require("next-router-mock"));
 
-describe('QuestForm', () => {
-  it('renders', () => {
+describe("QuestForm", () => {
+  it("contains YOLO button", () => {
     render(
       <ChakraProvider>
         <QuestForm />
       </ChakraProvider>
     );
-    expect(screen.getByRole('button')).toHaveText('The current route is: "/initial-path"');
-    // Click the button:
-    user.click(screen.getByRole('button'));
+    const yoloButton = screen.getByRole("button", { name: "YOLO" });
+    expect(yoloButton).toBeInTheDocument();
   });
 });
