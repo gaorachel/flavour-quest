@@ -4,7 +4,7 @@
 
 ## Overview
 
-[Flavour Quest](https://vercel.com/gaorachel/flavour-quest) is an interactive web application that utilises AI to recommend personalised recipes based on users' flavour preferences. It leverages the ChatGPT language model to generate unique recipes.
+[Flavour Quest](https://flavour-quest-rg.vercel.app) is an interactive web application that utilises AI to recommend personalised recipes based on users' flavour preferences. It leverages the ChatGPT language model to generate unique recipes.
 
 
 
@@ -24,6 +24,6 @@
 - Chakra UI
   
 ## Preview
-<img width="1504" alt="form-questions" src="https://github.com/gaorachel/flavour-quest/assets/65629022/d7493353-e728-4017-9558-685be13fbdf4">
-<img width="1509" alt="choice-summary-modal" src="https://github.com/gaorachel/flavour-quest/assets/65629022/9f7b0bd8-9fe0-4c73-b2d4-06d7c4e651cc">
-<img width="1509" alt="recipe-details" src="https://github.com/gaorachel/flavour-quest/assets/65629022/de1be64d-dcea-422d-88b8-f729d151ae42">
+<img width="1500" alt="form-questions" src="https://github.com/gaorachel/flavour-quest/assets/65629022/d7493353-e728-4017-9558-685be13fbdf4">
+<img width="1500" alt="choice-summary-modal" src="https://github.com/gaorachel/flavour-quest/assets/65629022/84404ab5-decd-481b-a7d3-1feb2678b058">
+<img width="1500" alt="recipe-details" src="https://github.com/gaorachel/flavour-quest/assets/65629022/de1be64d-dcea-422d-88b8-f729d151ae42">
