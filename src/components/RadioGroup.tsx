@@ -1,6 +1,17 @@
-import { Box, HStack, ResponsiveValue, UseRadioProps, useRadio, useRadioGroup } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  FormLabel,
+  HStack,
+  ResponsiveValue,
+  UseRadioProps,
+  useRadio,
+  useRadioGroup,
+} from "@chakra-ui/react";
 import { ReactNode, useEffect } from "react";
 import { FieldProps } from "formik";
+import { VALID_LOADERS } from "next/dist/shared/lib/image-config";
 
 interface RadioProps extends UseRadioProps {
   children: ReactNode;
@@ -31,7 +42,7 @@ function Radio(props: RadioProps) {
   const { state, getInputProps, getCheckboxProps } = useRadio(props);
 
   return (
-    <Box as="label">
+    <HStack as="label" id={props.name}>
       <input {...getInputProps()} />
       <Box
         {...getCheckboxProps()}
@@ -51,12 +62,13 @@ function Radio(props: RadioProps) {
       >
         {props.children}
       </Box>
-    </Box>
+    </HStack>
   );
 }
 
 interface RadioGroupProps extends FieldProps {
   name: string;
+  formLabel: string;
   optionArr: string[];
   defaultValue?: string;
   space?: number;
@@ -107,16 +119,23 @@ export function RadioGroup(props: RadioGroupProps) {
     }
   }, [defaultValue, field.name, field.value, setFieldValue]);
 
+  console.log(props.formLabel);
+
   return (
-    <HStack spacing={space} {...getRootProps()}>
-      {optionArr.map((option) => {
-        const radio = getRadioProps({ value: option });
-        return (
-          <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
-            {option}
-          </Radio>
-        );
-      })}
-    </HStack>
+    <Flex direction="column" id={field.name}>
+      <FormLabel> {props.formLabel} </FormLabel>
+      <Center>
+        <HStack spacing={space} {...getRootProps()}>
+          {optionArr.map((option) => {
+            const radio = getRadioProps({ value: option });
+            return (
+              <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
+                {option}
+              </Radio>
+            );
+          })}
+        </HStack>
+      </Center>
+    </Flex>
   );
 }

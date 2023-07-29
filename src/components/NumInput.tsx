@@ -47,7 +47,7 @@ export function NumInput(props: NumInputProps) {
   );
 
   return (
-    <>
+    <Flex id={field.name}>
       <FormControl>
         <FormLabel>{formLabel}</FormLabel>
         <HStack justify="center" paddingX={130} gap={10}>
@@ -94,6 +94,6 @@ export function NumInput(props: NumInputProps) {
           </Flex>
         </HStack>
       </FormControl>
-    </>
+    </Flex>
   );
 }

@@ -31,12 +31,10 @@ export function MultiSelect({
   };
 
   return (
-    <Flex paddingY={5}>
+    <Flex paddingY={5} id={field.name}>
       <FormControl>
         <FormLabel>{formLabel}</FormLabel>
         <Select
-          // id={JSON.stringify(optionArr)}
-          // instanceId={JSON.stringify(optionArr)}
           isMulti
           variant="flushed"
           tagVariant="subtle"

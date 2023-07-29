@@ -62,7 +62,7 @@ export function RangeSliderWithIndexValue(props: RangeSliderProps) {
   });
 
   return (
-    <Box>
+    <Box id={field.name}>
       <FormLabel> {formLabel} </FormLabel>
       <chakra.div cursor="pointer" {...getRootProps()}>
         <input {...getInputProps({ index: 0 })} hidden />

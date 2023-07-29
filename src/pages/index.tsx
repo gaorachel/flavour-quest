@@ -293,34 +293,36 @@ export default function QuestForm() {
                   optionArr={options.specificTextures}
                 />
 
-                <FormControl>
-                  <FormLabel>What is your budget?</FormLabel>
+                <Box id="budget">
+                  <FormControl>
+                    <FormLabel>What is your budget?</FormLabel>
 
-                  <HStack alignItems="center" justify="space-between" p={1}>
-                    <Field
-                      name="budget.currency"
-                      component={RadioGroup}
-                      optionArr={options.budget?.currency}
-                      defaultValue={"GBP"}
-                      borderRadius="full"
-                    />
+                    <HStack alignItems="center" justify="space-between" p={1}>
+                      <Field
+                        name="budget.currency"
+                        component={RadioGroup}
+                        optionArr={options.budget?.currency}
+                        defaultValue={"GBP"}
+                        borderRadius="full"
+                      />
 
+                      <Field
+                        name="budget.unit"
+                        component={RadioGroup}
+                        optionArr={options.budget?.unit}
+                        defaultValue={"per person"}
+                        space={0}
+                      />
+                    </HStack>
                     <Field
-                      name="budget.unit"
-                      component={RadioGroup}
-                      optionArr={options.budget?.unit}
-                      defaultValue={"per person"}
-                      space={0}
+                      name="budget.value"
+                      component={RangeSliderWithIndexValue}
+                      defaultValue={[options.budget?.value?.min, options?.budget?.value?.max]}
+                      min={0}
+                      max={200}
                     />
-                  </HStack>
-                  <Field
-                    name="budget.value"
-                    component={RangeSliderWithIndexValue}
-                    defaultValue={[options.budget?.value?.min, options?.budget?.value?.max]}
-                    min={0}
-                    max={200}
-                  />
-                </FormControl>
+                  </FormControl>
+                </Box>
               </Container>
 
               <Card maxW="sm" marginRight="7" marginLeft="1000" top="30%" position="fixed" right={0} bgColor="blue.100">
