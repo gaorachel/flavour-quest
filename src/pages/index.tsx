@@ -27,6 +27,7 @@ import {
   CardFooter,
   CardHeader,
   Highlight,
+  Box,
 } from "@chakra-ui/react";
 import { options } from "../data/questOptions";
 import { MultiSelect } from "../components/MultiSelect";
@@ -199,18 +200,14 @@ export default function QuestForm() {
                   optionArr={options.preferredFlavours}
                 />
 
-                <>
-                  <FormLabel> How spicy would you like? </FormLabel>
-                  <Center>
-                    <Field
-                      name="spicyLevels"
-                      component={RadioGroup}
-                      optionArr={options.spicyLevels}
-                      defaultValue={options.spicyLevels[2]}
-                      borderRadius="full"
-                    />
-                  </Center>
-                </>
+                <Field
+                  name="spicyLevels"
+                  formLabel="How spicy would you like?"
+                  component={RadioGroup}
+                  optionArr={options.spicyLevels}
+                  defaultValue={options.spicyLevels[2]}
+                  borderRadius="full"
+                />
 
                 <Field
                   name="preferredStyle"
