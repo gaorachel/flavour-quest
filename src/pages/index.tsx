@@ -35,6 +35,7 @@ import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
 import type { Choices } from "../type";
+import { time } from "console";
 
 export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +50,7 @@ export default function QuestForm() {
       const sortedKeyText = keyText.charAt(0).toUpperCase() + keyText.slice(1);
 
       let valueText = "";
-      if (Array.isArray(value)) valueText = value.toString();
+      if (Array.isArray(value)) valueText = value.join(", ");
       if (key === "cookingTime") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} mins`;
       if (key === "servingSize") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} people`;
       if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
@@ -63,14 +64,15 @@ export default function QuestForm() {
   const sendAPIReq = async (answers: Choices | Choices) => {
     const res = await axios.post("/api/quest", answers);
 
-    router.push({
-      pathname: "/results",
-      query: { data: JSON.stringify(res.data) },
-    });
-  };
+    let timeout = 0;
+    if (process.env.NODE_ENV === "development") timeout = 4000;
 
-  const handleSubmit = async (answers: Choices) => {
-    displayAnswersOnModal(answers), sendAPIReq(answers);
+    setTimeout(() => {
+      router.push({
+        pathname: "/results",
+        query: { data: JSON.stringify(res.data) },
+      });
+    }, timeout);
   };
 
   const randIntBy = (data: string[] | object) => {
@@ -85,9 +87,7 @@ export default function QuestForm() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  const handleClick = (options: Choices) => {
-    onOpen(); // show modal on the screen
-
+  const generateRandomAnswers = (options: Choices) => {
     let pickedOptions: Choices = {};
     const randIndices: number[] = [];
     for (let time = 0; time < randIntBetween(5, 8); ) {
@@ -150,7 +150,20 @@ export default function QuestForm() {
         };
       }
     }
-    handleSubmit(pickedAnswers);
+    return pickedAnswers;
+  };
+
+  const handleSubmit = async (answers: Choices) => {
+    displayAnswersOnModal(answers);
+    sendAPIReq(answers);
+  };
+
+  const handleYoloBtnClick = async (options: Choices) => {
+    const answers = generateRandomAnswers(options);
+
+    onOpen(); // show modal on the screen
+    displayAnswersOnModal(answers);
+    sendAPIReq(answers);
   };
 
   return (
@@ -343,7 +356,7 @@ export default function QuestForm() {
                   </Highlight>
                 </CardBody>
                 <CardFooter>
-                  <Button onClick={() => handleClick(options)} colorScheme="blue">
+                  <Button onClick={() => handleYoloBtnClick(options)} colorScheme="blue">
                     YOLO
                   </Button>
                 </CardFooter>
