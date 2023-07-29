@@ -1,8 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Choices, Format } from "@/type";
 import { mockRes } from "./_mockRes";
 import axios from "axios";
 import { askGPT } from "./_openai";
+
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { Choices, Format } from "@/type";
 
 const imgBackup = "https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/roast_fore_rib_of_beef_19243_16x9.jpg";
 const resExample = {

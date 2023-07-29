@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-import { Choices, Format } from "@/type";
+import type { Choices, Format } from "@/type";
 
 export async function askGPT(data: Choices, format: Format) {
   const configuration = new Configuration({
