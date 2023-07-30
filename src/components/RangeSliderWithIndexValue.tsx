@@ -47,7 +47,7 @@ export function RangeSliderWithIndexValue(props: RangeSliderProps) {
     max: valueRange[1],
     defaultValue,
     onChange: (value) => {
-      setFieldValue(field.name, value);
+      setFieldValue(field.name, { min: value[0], max: value[1] }); // output format
     },
   });
 
