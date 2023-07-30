@@ -68,7 +68,7 @@ function Radio(props: RadioProps) {
 
 interface RadioGroupProps extends FieldProps {
   formLabel: string;
-  optionArr: string[];
+  options: string[];
   defaultValue?: string;
   space?: number;
   borderRadius?:
@@ -96,7 +96,7 @@ interface RadioGroupProps extends FieldProps {
 
 export function RadioGroup(props: RadioGroupProps) {
   const {
-    optionArr,
+    options,
     defaultValue,
     space,
     borderRadius,
@@ -123,7 +123,7 @@ export function RadioGroup(props: RadioGroupProps) {
       <FormLabel> {props.formLabel} </FormLabel>
       <Center>
         <HStack spacing={space} {...getRootProps()}>
-          {optionArr.map((option) => {
+          {options.map((option) => {
             const radio = getRadioProps({ value: option });
             return (
               <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>

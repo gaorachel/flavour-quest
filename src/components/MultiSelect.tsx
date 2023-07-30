@@ -4,7 +4,7 @@ import { FieldProps } from "formik";
 
 interface MultiSelectProps extends FieldProps {
   formLabel: string;
-  optionArr: string[];
+  options: string[];
   placeholder?: string;
 }
 
@@ -15,14 +15,14 @@ interface Option {
 
 export function MultiSelect({
   formLabel,
-  optionArr,
+  options,
   placeholder = "Select",
   field,
   form: { setFieldValue },
   ...props
 }: MultiSelectProps) {
-  const selectOptionMapper = (optionArr: string[]) => {
-    return optionArr.map((option: string) => {
+  const selectOptionMapper = (options: string[]) => {
+    return options.map((option: string) => {
       return {
         label: option,
         value: option,
@@ -41,7 +41,7 @@ export function MultiSelect({
           colorScheme="orange"
           closeMenuOnSelect={false}
           placeholder={placeholder}
-          options={selectOptionMapper(optionArr)}
+          options={selectOptionMapper(options)}
           onChange={(selectedOptions: MultiValue<Option>) => {
             // Update the field value with the selected option values
             const selectedValues = selectedOptions.map((option) => option.value);

@@ -1,9 +1,11 @@
-export const questions = [
+import { Question } from "@/type";
+
+export const questions: Question[] = [
   {
     id: "preferredCuisines",
     type: "multi-selection",
-    question: "What are your preferred cuisines?",
-    optionArr: [
+    label: "What are your preferred cuisines?",
+    options: [
       "Any",
       "Chinese",
       "Turkish",
@@ -23,8 +25,8 @@ export const questions = [
   {
     id: "preferredFlavours",
     type: "multi-selection",
-    question: "What are your preferred flavours?",
-    optionArr: [
+    label: "What are your preferred flavours?",
+    options: [
       "Any",
       "Sweet",
       "Savory",
@@ -44,65 +46,65 @@ export const questions = [
   {
     id: "spicyLevels",
     type: "radio",
-    question: "How spicy would you like?",
-    optionArr: ["Mild", "Medium", "Hot", "Very Hot", "Extremely"],
+    label: "How spicy would you like?",
+    options: ["Mild", "Medium", "Hot", "Very Hot", "Extremely"],
     defaultOption: "Hot",
   },
   {
     id: "preferredStyle",
     type: "multi-selection",
-    question: "What are your preferred styles?",
-    optionArr: ["Meat or Poultry", "Fish or Seafood", "Flexitarian", "Pescatarian", "Acto-ovo ", "Vegetarian", "Vegan"],
+    label: "What are your preferred styles?",
+    options: ["Meat or Poultry", "Fish or Seafood", "Flexitarian", "Pescatarian", "Acto-ovo ", "Vegetarian", "Vegan"],
   },
   {
     id: "preferredMaterials",
     type: "multi-selection",
-    question: "What are your preferred materials?",
-    optionArr: ["Potato", "Tomato", "Aubergine", "Pork", "Beef", "Chicken", "Lamp", "Egg"],
+    label: "What are your preferred materials?",
+    options: ["Potato", "Tomato", "Aubergine", "Pork", "Beef", "Chicken", "Lamp", "Egg"],
   },
   {
     id: "preferredIngredients",
     type: "multi-selection",
-    question: "What are your preferred ingredients?",
-    optionArr: ["Cumin", "Black Pepper", "Basil", "Parsley"],
+    label: "What are your preferred ingredients?",
+    options: ["Cumin", "Black Pepper", "Basil", "Parsley"],
   },
   {
     id: "dietaryRestrictions",
     type: "multi-selection",
-    question: "Do you have any dietary restrictions or allergies?",
-    optionArr: ["Coriander", "Nuts", "Mango"],
+    label: "Do you have any dietary restrictions or allergies?",
+    options: ["Coriander", "Nuts", "Mango"],
   },
   {
     id: "specificGoals",
     type: "multi-selection",
-    question: "Do you have any specific goals related to your meals?",
-    optionArr: ["Weight lost", "Low carb", "Low fat", "More vegetables", "More protein"],
+    label: "Do you have any specific goals related to your meals?",
+    options: ["Weight lost", "Low carb", "Low fat", "More vegetables", "More protein"],
   },
   {
     id: "servingSize",
     type: "number-input",
-    question: "How many people will you be cooking for?",
+    label: "How many people will you be cooking for?",
     valueRange: [1, 30],
-    defaultValues: [1, 3],
+    defaultValue: [1, 3],
   },
   {
     id: "mealtime",
     type: "multi-selection",
-    question: "What are your preferred meal time?",
-    optionArr: ["Breakfast", "Lunch", "Dinner", "Snacks"],
+    label: "What are your preferred meal time?",
+    options: ["Breakfast", "Lunch", "Dinner", "Snacks"],
   },
   {
     id: "cookingTime",
     type: "range",
-    question: "How much time (minutes) would you prefer to spend on cooking/preparing the meal?",
+    label: "How much time (minutes) would you prefer to spend on cooking/preparing the meal?",
     valueRange: [0, 120],
-    defaultValues: [15, 30],
+    defaultValue: [15, 30],
   },
   {
     id: "cookingFacilities",
     type: "multi-selection",
-    question: "What cooking facilities do you have available?",
-    optionArr: [
+    label: "What cooking facilities do you have available?",
+    options: [
       "Stovetop",
       "Induction Cooktop",
       "Oven",
@@ -111,24 +113,24 @@ export const questions = [
       "Air Fryer",
       "Outdoor grill",
       "Rice Cooker",
-      "Looking for no-cook or minimal-cook meal optionArr",
+      "Looking for no-cook or minimal-cook meal options",
     ],
   },
   {
     id: "specificCookingTechniques",
     type: "multi-selection",
-    question: "Are there any specific cooking techniques you enjoy or prefer?",
-    optionArr: ["Grilling", "Slow-cooking", "Stir-frying", "Baking"],
+    label: "Are there any specific cooking techniques you enjoy or prefer?",
+    options: ["Grilling", "Slow-cooking", "Stir-frying", "Baking"],
   },
   {
     id: "budget",
     type: "custom",
-    question: "What is your budget?",
-    optionObj: {
+    label: "What is your budget?",
+    options: {
       unit: ["per person", "per meal"],
       currency: ["GBP", "EUR", "USD"],
     },
     valueRange: [0, 200],
-    defaultValues: [15, 50],
+    defaultValue: [15, 50],
   },
 ];

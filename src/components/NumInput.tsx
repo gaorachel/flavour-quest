@@ -18,7 +18,7 @@ interface NumInputProps extends FieldProps {
   name: string;
   formLabel: string;
   valueRange: [min: number, max: number];
-  defaultValues: [min: number, max: number];
+  defaultValue: [min: number, max: number];
 }
 
 export function NumInput(props: NumInputProps) {
@@ -26,13 +26,13 @@ export function NumInput(props: NumInputProps) {
     name,
     formLabel,
     valueRange,
-    defaultValues,
+    defaultValue,
     field,
     form: { setFieldValue },
   } = props;
 
-  const [valueMin, setValueMin] = useState(defaultValues[0]);
-  const [valueMax, setValueMax] = useState(defaultValues[1]);
+  const [valueMin, setValueMin] = useState(defaultValue[0]);
+  const [valueMax, setValueMax] = useState(defaultValue[1]);
 
   const handleChangeMin = (valueMin: string) => (
     setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueMin)
@@ -53,7 +53,7 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-min`}
               name={`${name}.min`}
               value={valueMin}
-              defaultValue={defaultValues[0]}
+              defaultValue={defaultValue[0]}
               min={valueRange[0]}
               max={valueMax}
               onChange={handleChangeMin}
@@ -74,7 +74,7 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-max`}
               name={`${name}.max`}
               value={valueMax}
-              defaultValue={defaultValues[1]}
+              defaultValue={defaultValue[1]}
               min={valueMin}
               max={valueRange[1]}
               onChange={handleChangeMax}
