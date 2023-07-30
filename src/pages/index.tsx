@@ -154,7 +154,7 @@ export default function QuestForm() {
   const handleSubmit = async (answers: Choices) => {
     console.log(answers);
     displayAnswersOnModal(answers);
-    // sendAPIReq(answers);
+    sendAPIReq(answers);
   };
 
   const handleYoloBtnClick = async (questions: Question[]) => {
@@ -162,7 +162,7 @@ export default function QuestForm() {
 
     onOpen(); // show modal on the screen
     displayAnswersOnModal(answers);
-    // sendAPIReq(answers);
+    sendAPIReq(answers);
   };
 
   return (
