@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { ReactNode, useEffect } from "react";
 import { FieldProps } from "formik";
-import { VALID_LOADERS } from "next/dist/shared/lib/image-config";
 
 interface RadioProps extends UseRadioProps {
   children: ReactNode;
@@ -42,7 +41,7 @@ function Radio(props: RadioProps) {
   const { state, getInputProps, getCheckboxProps } = useRadio(props);
 
   return (
-    <HStack as="label" id={props.name}>
+    <HStack as="label" id={props.value}>
       <input {...getInputProps()} />
       <Box
         {...getCheckboxProps()}
