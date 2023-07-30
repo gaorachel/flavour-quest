@@ -56,7 +56,7 @@ export default function QuestForm() {
       if (key === "budget") valueText = `${value.currency} ${value.value[0]} - ${value.value[1]} ${value.unit}`;
       if (key === "spicyLevels") valueText = value;
 
-      sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
+      if (value.length != 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
     }
     setModalData(sortedAnswers);
   };
