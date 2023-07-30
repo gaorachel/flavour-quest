@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { ChakraProvider } from "@chakra-ui/react";
-import QuestForm from ".";
-import { matchMediaMock } from "../../mocks/matchMediaMock";
+import QuestForm from "../pages";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
