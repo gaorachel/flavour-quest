@@ -17,10 +17,7 @@ interface NumInputProps extends FieldProps {
   id: string;
   name: string;
   formLabel: string;
-  valueMin: number;
-  valueMax: number;
-  min: number;
-  max: number;
+  valueRange: [min: number, max: number];
   defaultValue: [min: number, max: number];
 }
 
@@ -28,8 +25,7 @@ export function NumInput(props: NumInputProps) {
   const {
     name,
     formLabel,
-    min,
-    max,
+    valueRange,
     defaultValue,
     field,
     form: { setFieldValue },
@@ -47,7 +43,7 @@ export function NumInput(props: NumInputProps) {
   );
 
   return (
-    <>
+    <Flex id={field.name}>
       <FormControl>
         <FormLabel>{formLabel}</FormLabel>
         <HStack justify="center" paddingX={130} gap={10}>
@@ -58,7 +54,7 @@ export function NumInput(props: NumInputProps) {
               name={`${name}.min`}
               value={valueMin}
               defaultValue={defaultValue[0]}
-              min={min}
+              min={valueRange[0]}
               max={valueMax}
               onChange={handleChangeMin}
               clampValueOnBlur={true}
@@ -80,7 +76,7 @@ export function NumInput(props: NumInputProps) {
               value={valueMax}
               defaultValue={defaultValue[1]}
               min={valueMin}
-              max={max}
+              max={valueRange[1]}
               onChange={handleChangeMax}
               clampValueOnBlur={true}
               keepWithinRange={true}
@@ -94,6 +90,6 @@ export function NumInput(props: NumInputProps) {
           </Flex>
         </HStack>
       </FormControl>
-    </>
+    </Flex>
   );
 }

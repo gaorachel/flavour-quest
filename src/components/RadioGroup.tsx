@@ -1,4 +1,14 @@
-import { Box, HStack, ResponsiveValue, UseRadioProps, useRadio, useRadioGroup } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  FormLabel,
+  HStack,
+  ResponsiveValue,
+  UseRadioProps,
+  useRadio,
+  useRadioGroup,
+} from "@chakra-ui/react";
 import { ReactNode, useEffect } from "react";
 import { FieldProps } from "formik";
 
@@ -31,7 +41,7 @@ function Radio(props: RadioProps) {
   const { state, getInputProps, getCheckboxProps } = useRadio(props);
 
   return (
-    <Box as="label">
+    <HStack as="label" id={props.value}>
       <input {...getInputProps()} />
       <Box
         {...getCheckboxProps()}
@@ -51,13 +61,13 @@ function Radio(props: RadioProps) {
       >
         {props.children}
       </Box>
-    </Box>
+    </HStack>
   );
 }
 
 interface RadioGroupProps extends FieldProps {
-  name: string;
-  optionArr: string[];
+  formLabel: string;
+  options: string[];
   defaultValue?: string;
   space?: number;
   borderRadius?:
@@ -85,7 +95,7 @@ interface RadioGroupProps extends FieldProps {
 
 export function RadioGroup(props: RadioGroupProps) {
   const {
-    optionArr,
+    options,
     defaultValue,
     space,
     borderRadius,
@@ -108,15 +118,20 @@ export function RadioGroup(props: RadioGroupProps) {
   }, [defaultValue, field.name, field.value, setFieldValue]);
 
   return (
-    <HStack spacing={space} {...getRootProps()}>
-      {optionArr.map((option) => {
-        const radio = getRadioProps({ value: option });
-        return (
-          <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
-            {option}
-          </Radio>
-        );
-      })}
-    </HStack>
+    <Flex direction="column" id={field.name}>
+      <FormLabel> {props.formLabel} </FormLabel>
+      <Center>
+        <HStack spacing={space} {...getRootProps()}>
+          {options.map((option) => {
+            const radio = getRadioProps({ value: option });
+            return (
+              <Radio key={option} {...radio} borderRadius={borderRadius} isChecked={field.value === option}>
+                {option}
+              </Radio>
+            );
+          })}
+        </HStack>
+      </Center>
+    </Flex>
   );
 }

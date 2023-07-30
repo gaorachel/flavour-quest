@@ -27,16 +27,14 @@ function Thumb({ value, thumbProps }: ThumbProps) {
 }
 interface RangeSliderProps extends FieldProps {
   name: string;
-  min: number;
-  max: number;
-  defaultValue: [number, number];
+  valueRange: [min: number, max: number];
+  defaultValue: [min: number, max: number];
   formLabel?: string;
 }
 
 export function RangeSliderWithIndexValue(props: RangeSliderProps) {
   const {
-    min,
-    max,
+    valueRange,
     defaultValue,
     formLabel,
     field,
@@ -45,8 +43,8 @@ export function RangeSliderWithIndexValue(props: RangeSliderProps) {
 
   const { state, getInnerTrackProps, getInputProps, getRootProps, getThumbProps, getTrackProps } = useRangeSlider({
     name: field.name,
-    min,
-    max,
+    min: valueRange[0],
+    max: valueRange[1],
     defaultValue,
     onChange: (value) => {
       setFieldValue(field.name, value);
@@ -62,7 +60,7 @@ export function RangeSliderWithIndexValue(props: RangeSliderProps) {
   });
 
   return (
-    <Box>
+    <Box id={field.name}>
       <FormLabel> {formLabel} </FormLabel>
       <chakra.div cursor="pointer" {...getRootProps()}>
         <input {...getInputProps({ index: 0 })} hidden />

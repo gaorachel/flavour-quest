@@ -27,15 +27,15 @@ import {
   CardFooter,
   CardHeader,
   Highlight,
+  Box,
 } from "@chakra-ui/react";
-import { options } from "../data/questOptions";
+import { questions } from "@/data/questions";
 import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
-import type { Choices } from "../type";
-import { time } from "console";
+import type { Question, Choices } from "../type";
 
 export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,10 +53,10 @@ export default function QuestForm() {
       if (Array.isArray(value)) valueText = value.join(", ");
       if (key === "cookingTime") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} mins`;
       if (key === "servingSize") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} people`;
-      if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
+      if (key === "budget") valueText = `${value.currency} ${value.value[0]} - ${value.value[1]} ${value.unit}`;
       if (key === "spicyLevels") valueText = value;
 
-      if (value.length !== 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
+      sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
     }
     setModalData(sortedAnswers);
   };
@@ -75,95 +75,94 @@ export default function QuestForm() {
     }, timeout);
   };
 
-  const randIntBy = (data: string[] | object) => {
-    let len = 0;
-    if (typeof data === "object") len = Object.keys(data).length;
-    if (Array.isArray(data)) len = data.length;
-
-    return Math.floor(Math.random() * len);
+  const getRandomIntBy = (data: string[]) => {
+    return Math.floor(Math.random() * data.length);
   };
 
-  const randIntBetween = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  const getRandomIntBetween = (min: number, max: number) => {
+    return Math.round(Math.random() * (max - min + 1) + min);
   };
 
-  const generateRandomAnswers = (options: Choices) => {
-    let pickedOptions: Choices = {};
-    const randIndices: number[] = [];
-    for (let time = 0; time < randIntBetween(5, 8); ) {
-      const randIdx = randIntBy(options);
+  const getRandomElements = (arr: string[]) => {
+    const selectedElements = new Set();
+    const totalSelectTime = arr.length <= 4 ? arr.length : getRandomIntBetween(5, 8);
+    for (let i = 0; i < totalSelectTime; i++) {
+      const randIdx = Math.floor(Math.random() * arr.length);
+      selectedElements.add(arr[randIdx]);
+    }
 
-      if (!randIndices.includes(randIdx)) {
-        const pickedEl = Object.fromEntries([Object.entries(options)[randIdx]]);
-        pickedOptions = { ...pickedOptions, ...pickedEl };
-        randIndices.push(randIdx);
+    return Array.from(selectedElements);
+  };
+
+  const getRandomRange = (valueRange: [min: number, max: number]) => {
+    const randNum1 = getRandomIntBetween(valueRange[0], valueRange[1]);
+    const randNum2 = getRandomIntBetween(valueRange[0], valueRange[1]);
+
+    if (randNum1 < randNum2) return [randNum1, randNum2];
+    if (randNum1 > randNum2) return [randNum2, randNum1];
+
+    return [randNum1 - 10, randNum2];
+  };
+
+  const generateRandomAnswers = (questions: Question[]) => {
+    let pickedQuestions: Question[] = [];
+
+    let pickedIndices: number[] = [];
+    for (let i = 0; i < getRandomIntBetween(5, 8); i++) {
+      const randIdx = Math.floor(Math.random() * questions.length);
+
+      if (!pickedIndices.includes(randIdx)) {
+        pickedQuestions.push(questions[randIdx]);
+        pickedIndices.push(randIdx);
       }
-
-      time++;
     }
 
     let pickedAnswers: Choices = {};
-    for (const [key, value] of Object.entries(pickedOptions)) {
-      if (key === "spicyLevels") {
-        const randIdx = randIntBetween(0, 4);
-
-        pickedAnswers = { ...pickedAnswers, [key]: value[randIdx] };
-        continue;
+    for (const question of pickedQuestions) {
+      if (question.type === "multi-selection") {
+        pickedAnswers = { ...pickedAnswers, [question.id]: getRandomElements(question.options) };
       }
 
-      if (Array.isArray(value)) {
-        const pickedValues = new Set();
-        for (let time = 0; time < randIntBetween(1, 7); ) {
-          const randIdx = randIntBy(value);
-          if (value[randIdx] !== "Any") pickedValues.add(value[randIdx]);
-
-          pickedAnswers = { ...pickedAnswers, [key]: [...pickedValues] };
-          time++;
-        }
+      if (question.type === "number-input" || question.type === "range") {
+        pickedAnswers = { ...pickedAnswers, [question.id]: getRandomRange(question.valueRange) };
       }
 
-      if (key === "servingSize" || key === "cookingTime") {
-        // below are just some random params
-        const ranNum = randIntBetween(1, 5);
-        const min = Math.ceil(value.min * ranNum * 0.1);
-        const max = Math.ceil(value.max * ranNum * 0.04);
-
-        pickedAnswers = { ...pickedAnswers, [key]: { min, max } };
+      if (question.type === "radio") {
+        const randIdx = getRandomIntBy(question.options);
+        pickedAnswers = { ...pickedAnswers, [question.id]: question.options[randIdx] };
       }
 
-      if (key === "budget") {
-        const unit = value.unit[randIntBetween(0, 1)];
-        const min = value.value.min * randIntBetween(1, 3);
-        const max = value.value.max * randIntBetween(1, 3);
-        const currency = value.currency[randIntBetween(0, 2)];
+      if (question.type === "custom" && question.id === "budget" && question.valueRange) {
+        const randIdx1 = getRandomIntBy(question.options.unit);
+        const randIdx2 = getRandomIntBy(question.options.currency);
+        const randRange = getRandomRange(question.valueRange);
 
         pickedAnswers = {
           ...pickedAnswers,
-          [key]: {
-            unit,
-            value: {
-              min,
-              max,
-            },
-            currency,
+          [question.id]: {
+            unit: question.options.unit[randIdx1],
+            currency: question.options.currency[randIdx2],
+            value: { min: randRange[0], max: randRange[2] },
           },
         };
       }
     }
+
     return pickedAnswers;
   };
 
   const handleSubmit = async (answers: Choices) => {
+    console.log(answers);
     displayAnswersOnModal(answers);
-    sendAPIReq(answers);
+    // sendAPIReq(answers);
   };
 
-  const handleYoloBtnClick = async (options: Choices) => {
-    const answers = generateRandomAnswers(options);
+  const handleYoloBtnClick = async (questions: Question[]) => {
+    const answers = generateRandomAnswers(questions);
 
     onOpen(); // show modal on the screen
     displayAnswersOnModal(answers);
-    sendAPIReq(answers);
+    // sendAPIReq(answers);
   };
 
   return (
@@ -186,8 +185,8 @@ export default function QuestForm() {
           specificTextures: [],
           budget: {
             unit: "per person",
-            value: { min: 15, max: 50 },
             currency: "GBP",
+            value: { min: 15, max: 50 },
           },
         }}
         onSubmit={handleSubmit}
@@ -199,141 +198,88 @@ export default function QuestForm() {
                 <Heading paddingY={5} size="xl">
                   Quests....
                 </Heading>
-                <Field
-                  name="preferredCuisines"
-                  formLabel="What are your preferred cuisines?"
-                  component={MultiSelect}
-                  optionArr={options.preferredCuisines}
-                />
-                <Field
-                  name="preferredFlavours"
-                  formLabel="What are your preferred flavours?"
-                  component={MultiSelect}
-                  optionArr={options.preferredFlavours}
-                />
+                {questions.map((el) => {
+                  if (el.type === "multi-selection")
+                    return (
+                      <Field
+                        component={MultiSelect}
+                        name={el.id}
+                        formLabel={el.label}
+                        options={el.options}
+                        key={el.id}
+                      />
+                    );
 
-                <>
-                  <FormLabel> How spicy would you like? </FormLabel>
-                  <Center>
-                    <Field
-                      name="spicyLevels"
-                      component={RadioGroup}
-                      optionArr={options.spicyLevels}
-                      defaultValue={options.spicyLevels[2]}
-                      borderRadius="full"
-                    />
-                  </Center>
-                </>
+                  if (el.type === "radio")
+                    return (
+                      <Field
+                        component={RadioGroup}
+                        name={el.id}
+                        formLabel={el.label}
+                        options={el.options}
+                        defaultValue={el.defaultOption}
+                        borderRadius="full"
+                        key={el.id}
+                      />
+                    );
 
-                <Field
-                  name="preferredStyle"
-                  formLabel="What are your preferred styles?"
-                  component={MultiSelect}
-                  optionArr={options.preferredStyle}
-                />
+                  if (el.type === "number-input")
+                    return (
+                      <Field
+                        component={NumInput}
+                        name={el.id}
+                        formLabel={el.label}
+                        valueRange={el.valueRange}
+                        defaultValue={el.defaultValue}
+                        key={el.id}
+                      />
+                    );
 
-                <Field
-                  name="preferredMaterials"
-                  formLabel="What are your preferred materials?"
-                  component={MultiSelect}
-                  optionArr={options.preferredMaterials}
-                />
+                  if (el.type === "range")
+                    return (
+                      <Field
+                        component={RangeSliderWithIndexValue}
+                        name={el.id}
+                        formLabel={el.label}
+                        valueRange={el.valueRange}
+                        defaultValue={el.defaultValue}
+                        key={el.id}
+                      />
+                    );
+                  if (el.id === "budget") {
+                    return (
+                      <Box key={el.id}>
+                        <FormControl>
+                          <FormLabel>{el.label}</FormLabel>
 
-                <Field
-                  name="preferredIngredients"
-                  formLabel="What are your preferred ingredients?"
-                  component={MultiSelect}
-                  optionArr={options.preferredIngredients}
-                />
+                          <HStack alignItems="center" justify="space-between" p={1}>
+                            <Field
+                              component={RadioGroup}
+                              name="budget.currency"
+                              options={el.options.currency}
+                              defaultValue={el.options.currency[0]}
+                              borderRadius="full"
+                            />
 
-                <Field
-                  name="dietaryRestrictions"
-                  formLabel="Do you have any dietary restrictions or allergies?"
-                  component={MultiSelect}
-                  optionArr={options.dietaryRestrictions}
-                />
-
-                <Field
-                  name="specificGoals"
-                  formLabel="Do you have any specific goals related to your meals?"
-                  component={MultiSelect}
-                  optionArr={options.specificGoals}
-                />
-
-                <Field
-                  name="servingSize"
-                  formLabel="How many people will you be cooking for?"
-                  component={NumInput}
-                  min={options.servingSize?.min}
-                  max={options.servingSize?.max}
-                  defaultValue={[1, 3]}
-                />
-
-                <Field
-                  name="mealtime"
-                  formLabel="What are your preferred meal time?"
-                  component={MultiSelect}
-                  optionArr={options.mealtime}
-                />
-
-                <Field
-                  name="cookingTime"
-                  formLabel="How much time (minutes) would you prefer to spend on cooking/preparing the meal?"
-                  component={RangeSliderWithIndexValue}
-                  defaultValue={[options.cookingTime?.min, options.cookingTime?.max]}
-                  min={0}
-                  max={120}
-                />
-
-                <Field
-                  name="cookingFacilities"
-                  formLabel="What cooking facilities do you have available?"
-                  component={MultiSelect}
-                  optionArr={options.cookingFacilities}
-                />
-
-                <Field
-                  name="specificCookingTechniques"
-                  formLabel="Are there any specific cooking techniques you enjoy or prefer?"
-                  component={MultiSelect}
-                  optionArr={options.specificCookingTechniques}
-                />
-
-                <Field
-                  name="specificTextures"
-                  formLabel="Are there any specific textures or consistencies you enjoy?"
-                  component={MultiSelect}
-                  optionArr={options.specificTextures}
-                />
-
-                <FormControl>
-                  <FormLabel>What is your budget?</FormLabel>
-
-                  <HStack alignItems="center" justify="space-between" p={1}>
-                    <Field
-                      name="budget.currency"
-                      component={RadioGroup}
-                      optionArr={options.budget?.currency}
-                      defaultValue={"GBP"}
-                      borderRadius="full"
-                    />
-
-                    <Field
-                      name="budget.unit"
-                      component={RadioGroup}
-                      optionArr={options.budget?.unit}
-                      defaultValue={"per person"}
-                      space={0}
-                    />
-                  </HStack>
-                  <Field
-                    name="budget.value"
-                    component={RangeSliderWithIndexValue}
-                    defaultValue={[options.budget?.value?.min, options?.budget?.value?.max]}
-                    min={0}
-                    max={200}
-                  />
-                </FormControl>
+                            <Field
+                              component={RadioGroup}
+                              name="budget.unit"
+                              options={el.options.unit}
+                              defaultValue={el.options.unit[0]}
+                              space={0}
+                            />
+                          </HStack>
+                          <Field
+                            component={RangeSliderWithIndexValue}
+                            name="budget.value"
+                            valueRange={el.valueRange}
+                            defaultValue={el.defaultValue}
+                          />
+                        </FormControl>
+                      </Box>
+                    );
+                  }
+                })}
               </Container>
 
               <Card maxW="sm" marginRight="7" marginLeft="1000" top="30%" position="fixed" right={0} bgColor="blue.100">
@@ -356,7 +302,7 @@ export default function QuestForm() {
                   </Highlight>
                 </CardBody>
                 <CardFooter>
-                  <Button onClick={() => handleYoloBtnClick(options)} colorScheme="blue">
+                  <Button onClick={() => handleYoloBtnClick(questions)} colorScheme="blue">
                     YOLO
                   </Button>
                 </CardFooter>
