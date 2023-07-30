@@ -29,14 +29,13 @@ import {
   Highlight,
   Box,
 } from "@chakra-ui/react";
-import { options } from "../data/questOptions";
+import { questions } from "@/data/questions";
 import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
 
 import type { Choices } from "../type";
-import { time } from "console";
 
 export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -88,15 +87,15 @@ export default function QuestForm() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  const generateRandomAnswers = (options: Choices) => {
-    let pickedOptions: Choices = {};
+  const generateRandomAnswers = (optionArr: Choices) => {
+    let pickedoptionArr: Choices = {};
     const randIndices: number[] = [];
     for (let time = 0; time < randIntBetween(5, 8); ) {
-      const randIdx = randIntBy(options);
+      const randIdx = randIntBy(optionArr);
 
       if (!randIndices.includes(randIdx)) {
-        const pickedEl = Object.fromEntries([Object.entries(options)[randIdx]]);
-        pickedOptions = { ...pickedOptions, ...pickedEl };
+        const pickedEl = Object.fromEntries([Object.entries(optionArr)[randIdx]]);
+        pickedoptionArr = { ...pickedoptionArr, ...pickedEl };
         randIndices.push(randIdx);
       }
 
@@ -104,7 +103,7 @@ export default function QuestForm() {
     }
 
     let pickedAnswers: Choices = {};
-    for (const [key, value] of Object.entries(pickedOptions)) {
+    for (const [key, value] of Object.entries(pickedoptionArr)) {
       if (key === "spicyLevels") {
         const randIdx = randIntBetween(0, 4);
 
@@ -159,8 +158,8 @@ export default function QuestForm() {
     sendAPIReq(answers);
   };
 
-  const handleYoloBtnClick = async (options: Choices) => {
-    const answers = generateRandomAnswers(options);
+  const handleYoloBtnClick = async (optionArr: Choices) => {
+    const answers = generateRandomAnswers(optionArr);
 
     onOpen(); // show modal on the screen
     displayAnswersOnModal(answers);
@@ -200,139 +199,83 @@ export default function QuestForm() {
                 <Heading paddingY={5} size="xl">
                   Quests....
                 </Heading>
-                <Field
-                  name="preferredCuisines"
-                  formLabel="What are your preferred cuisines?"
-                  component={MultiSelect}
-                  optionArr={options.preferredCuisines}
-                />
-                <Field
-                  name="preferredFlavours"
-                  formLabel="What are your preferred flavours?"
-                  component={MultiSelect}
-                  optionArr={options.preferredFlavours}
-                />
+                {questions.map((el) => {
+                  if (el.id === "budget") {
+                    return (
+                      <Box key={el.id}>
+                        <FormControl>
+                          <FormLabel>{el.question}</FormLabel>
 
-                <Field
-                  name="spicyLevels"
-                  formLabel="How spicy would you like?"
-                  component={RadioGroup}
-                  optionArr={options.spicyLevels}
-                  defaultValue={options.spicyLevels[2]}
-                  borderRadius="full"
-                />
+                          <HStack alignItems="center" justify="space-between" p={1}>
+                            <Field
+                              name="budget.currency"
+                              component={RadioGroup}
+                              optionArr={el.optionObj?.currency}
+                              defaultValues={el.optionObj?.currency[0]}
+                              borderRadius="full"
+                            />
 
-                <Field
-                  name="preferredStyle"
-                  formLabel="What are your preferred styles?"
-                  component={MultiSelect}
-                  optionArr={options.preferredStyle}
-                />
+                            <Field
+                              name="budget.unit"
+                              component={RadioGroup}
+                              optionArr={el.optionObj?.unit}
+                              defaultValues={el.optionObj?.unit[0]}
+                              space={0}
+                            />
+                          </HStack>
+                          <Field
+                            name="budget.value"
+                            component={RangeSliderWithIndexValue}
+                            min={el.valueRange?.min}
+                            max={el.valueRange?.min}
+                            defaultValues={[30, 50]}
+                          />
+                        </FormControl>
+                      </Box>
+                    );
+                  }
 
-                <Field
-                  name="preferredMaterials"
-                  formLabel="What are your preferred materials?"
-                  component={MultiSelect}
-                  optionArr={options.preferredMaterials}
-                />
+                  if (el.type === "multi-selection")
+                    return (
+                      <Field name={el.id} formLabel={el.question} component={MultiSelect} optionArr={el.optionArr} />
+                    );
 
-                <Field
-                  name="preferredIngredients"
-                  formLabel="What are your preferred ingredients?"
-                  component={MultiSelect}
-                  optionArr={options.preferredIngredients}
-                />
-
-                <Field
-                  name="dietaryRestrictions"
-                  formLabel="Do you have any dietary restrictions or allergies?"
-                  component={MultiSelect}
-                  optionArr={options.dietaryRestrictions}
-                />
-
-                <Field
-                  name="specificGoals"
-                  formLabel="Do you have any specific goals related to your meals?"
-                  component={MultiSelect}
-                  optionArr={options.specificGoals}
-                />
-
-                <Field
-                  name="servingSize"
-                  formLabel="How many people will you be cooking for?"
-                  component={NumInput}
-                  min={options.servingSize?.min}
-                  max={options.servingSize?.max}
-                  defaultValue={[1, 3]}
-                />
-
-                <Field
-                  name="mealtime"
-                  formLabel="What are your preferred meal time?"
-                  component={MultiSelect}
-                  optionArr={options.mealtime}
-                />
-
-                <Field
-                  name="cookingTime"
-                  formLabel="How much time (minutes) would you prefer to spend on cooking/preparing the meal?"
-                  component={RangeSliderWithIndexValue}
-                  defaultValue={[options.cookingTime?.min, options.cookingTime?.max]}
-                  min={0}
-                  max={120}
-                />
-
-                <Field
-                  name="cookingFacilities"
-                  formLabel="What cooking facilities do you have available?"
-                  component={MultiSelect}
-                  optionArr={options.cookingFacilities}
-                />
-
-                <Field
-                  name="specificCookingTechniques"
-                  formLabel="Are there any specific cooking techniques you enjoy or prefer?"
-                  component={MultiSelect}
-                  optionArr={options.specificCookingTechniques}
-                />
-
-                <Field
-                  name="specificTextures"
-                  formLabel="Are there any specific textures or consistencies you enjoy?"
-                  component={MultiSelect}
-                  optionArr={options.specificTextures}
-                />
-
-                <Box id="budget">
-                  <FormControl>
-                    <FormLabel>What is your budget?</FormLabel>
-
-                    <HStack alignItems="center" justify="space-between" p={1}>
+                  if (el.type === "radio")
+                    return (
                       <Field
-                        name="budget.currency"
+                        name={el.id}
+                        formLabel={el.question}
                         component={RadioGroup}
-                        optionArr={options.budget?.currency}
-                        defaultValue={"GBP"}
+                        optionArr={el.optionArr}
+                        defaultValues={el.defaultValues}
                         borderRadius="full"
                       />
+                    );
 
+                  if (el.type === "number-input")
+                    return (
                       <Field
-                        name="budget.unit"
-                        component={RadioGroup}
-                        optionArr={options.budget?.unit}
-                        defaultValue={"per person"}
-                        space={0}
+                        name={el.id}
+                        formLabel={el.question}
+                        component={NumInput}
+                        min={el.valueRange?.min}
+                        max={el.valueRange?.max}
+                        defaultValues={[el.defaultValues?.min, el.defaultValues?.min]}
                       />
-                    </HStack>
-                    <Field
-                      name="budget.value"
-                      component={RangeSliderWithIndexValue}
-                      defaultValue={[options.budget?.value?.min, options?.budget?.value?.max]}
-                      min={0}
-                      max={200}
-                    />
-                  </FormControl>
-                </Box>
+                    );
+
+                  if (el.type === "range")
+                    return (
+                      <Field
+                        name={el.id}
+                        formLabel={el.question}
+                        component={RangeSliderWithIndexValue}
+                        min={el.valueRange?.min}
+                        max={el.valueRange?.max}
+                        defaultValues={[el.defaultValues?.min, el.defaultValues?.min]}
+                      />
+                    );
+                })}
               </Container>
 
               <Card maxW="sm" marginRight="7" marginLeft="1000" top="30%" position="fixed" right={0} bgColor="blue.100">
@@ -355,9 +298,9 @@ export default function QuestForm() {
                   </Highlight>
                 </CardBody>
                 <CardFooter>
-                  <Button onClick={() => handleYoloBtnClick(options)} colorScheme="blue">
+                  {/* <Button onClick={() => handleYoloBtnClick(questions)} colorScheme="blue">
                     YOLO
-                  </Button>
+                  </Button> */}
                 </CardFooter>
               </Card>
             </Flex>
