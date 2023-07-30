@@ -35,11 +35,11 @@ export function NumInput(props: NumInputProps) {
   const [valueMax, setValueMax] = useState(defaultValues[1]);
 
   const handleChangeMin = (valueMin: string) => (
-    setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueRange[0])
+    setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueMin)
   );
 
   const handleChangeMax = (valueMax: string) => (
-    setValueMax(parseFloat(valueMax)), setFieldValue(`${field.name}.max`, valueRange[1])
+    setValueMax(parseFloat(valueMax)), setFieldValue(`${field.name}.max`, valueMax)
   );
 
   return (
