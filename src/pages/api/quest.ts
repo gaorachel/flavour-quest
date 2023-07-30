@@ -5,7 +5,8 @@ import { askGPT } from "./_openai";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Choices, Format } from "@/type";
 
-const imgBackup = "https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/roast_fore_rib_of_beef_19243_16x9.jpg";
+const imgBackup =
+  "https://assets.bonappetit.com/photos/57ae3e611b33404414975c0d/16:9/w_1280,c_limit/roasted-chicken-thighs-with-lemon-and-oregano.jpg";
 const resExample = {
   recipeName: "Spaghetti Carbonara",
   cuisineType: "Italian",
@@ -32,25 +33,30 @@ const resExample = {
 };
 
 export default async function questHandler(req: NextApiRequest, res: NextApiResponse<any>) {
-  try {
-    if (process.env.NODE_ENV === "development") return res.send({ ...mockRes, img: imgBackup });
+  if (process.env.NODE_ENV === "development") return res.send({ ...mockRes, img: imgBackup });
 
+  try {
     const formData: Choices = req.body;
     const recipeRes: Format = await askGPT(formData, resExample);
-    const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
-      params: {
-        key: process.env.GOOGLE_SEARCH_API_KEY,
-        cx: process.env.GOOGLE_SEARCH_API_CX,
-        searchType: "image",
-        num: 1,
-        hq: "16:9",
-        imgSize: "large",
-        gl: "countryUK",
-        q: recipeRes.recipeName,
-      },
-    });
-    res.status(201).send({ ...recipeRes, img: imgRes.data.items[0].link || imgBackup });
+
+    try {
+      const imgRes = await axios.get("https://www.googleapis.com/customsearch/v1", {
+        params: {
+          key: process.env.GOOGLE_SEARCH_API_KEY,
+          cx: process.env.GOOGLE_SEARCH_API_CX,
+          searchType: "image",
+          num: 1,
+          hq: "16:9",
+          gl: "countryUK",
+          q: recipeRes.recipeName,
+        },
+      });
+
+      res.send({ ...recipeRes, img: imgRes.data.items[0].link });
+    } catch (e) {
+      res.send({ ...recipeRes, img: imgBackup });
+    }
   } catch (e) {
-    res.status(500).send(e);
+    res.send({ ...mockRes, img: imgBackup });
   }
 }
