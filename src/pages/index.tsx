@@ -226,9 +226,8 @@ export default function QuestForm() {
                           <Field
                             name="budget.value"
                             component={RangeSliderWithIndexValue}
-                            min={el.valueRange?.min}
-                            max={el.valueRange?.min}
-                            defaultValues={[30, 50]}
+                            valueRange={el.valueRange}
+                            defaultValues={el.defaultValues}
                           />
                         </FormControl>
                       </Box>
@@ -258,9 +257,8 @@ export default function QuestForm() {
                         name={el.id}
                         formLabel={el.question}
                         component={NumInput}
-                        min={el.valueRange?.min}
-                        max={el.valueRange?.max}
-                        defaultValues={[el.defaultValues?.min, el.defaultValues?.min]}
+                        valueRange={el.valueRange}
+                        defaultValues={el.defaultValues}
                       />
                     );
 
@@ -270,9 +268,8 @@ export default function QuestForm() {
                         name={el.id}
                         formLabel={el.question}
                         component={RangeSliderWithIndexValue}
-                        min={el.valueRange?.min}
-                        max={el.valueRange?.max}
-                        defaultValues={[el.defaultValues?.min, el.defaultValues?.min]}
+                        valueRange={el.valueRange}
+                        defaultValues={el.defaultValues}
                       />
                     );
                 })}

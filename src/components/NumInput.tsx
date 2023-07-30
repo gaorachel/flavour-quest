@@ -17,33 +17,29 @@ interface NumInputProps extends FieldProps {
   id: string;
   name: string;
   formLabel: string;
-  valueMin: number;
-  valueMax: number;
-  min: number;
-  max: number;
-  defaultValue: [min: number, max: number];
+  valueRange: [min: number, max: number];
+  defaultValues: [min: number, max: number];
 }
 
 export function NumInput(props: NumInputProps) {
   const {
     name,
     formLabel,
-    min,
-    max,
-    defaultValue,
+    valueRange,
+    defaultValues,
     field,
     form: { setFieldValue },
   } = props;
 
-  const [valueMin, setValueMin] = useState(defaultValue[0]);
-  const [valueMax, setValueMax] = useState(defaultValue[1]);
+  const [valueMin, setValueMin] = useState(defaultValues[0]);
+  const [valueMax, setValueMax] = useState(defaultValues[1]);
 
   const handleChangeMin = (valueMin: string) => (
-    setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueMin)
+    setValueMin(parseFloat(valueMin)), setFieldValue(`${field.name}.min`, valueRange[0])
   );
 
   const handleChangeMax = (valueMax: string) => (
-    setValueMax(parseFloat(valueMax)), setFieldValue(`${field.name}.max`, valueMax)
+    setValueMax(parseFloat(valueMax)), setFieldValue(`${field.name}.max`, valueRange[1])
   );
 
   return (
@@ -57,8 +53,8 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-min`}
               name={`${name}.min`}
               value={valueMin}
-              defaultValue={defaultValue[0]}
-              min={min}
+              defaultValue={defaultValues[0]}
+              min={valueRange[0]}
               max={valueMax}
               onChange={handleChangeMin}
               clampValueOnBlur={true}
@@ -78,9 +74,9 @@ export function NumInput(props: NumInputProps) {
               id={`${name}-max`}
               name={`${name}.max`}
               value={valueMax}
-              defaultValue={defaultValue[1]}
+              defaultValue={defaultValues[1]}
               min={valueMin}
-              max={max}
+              max={valueRange[1]}
               onChange={handleChangeMax}
               clampValueOnBlur={true}
               keepWithinRange={true}

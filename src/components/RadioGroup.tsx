@@ -67,7 +67,6 @@ function Radio(props: RadioProps) {
 }
 
 interface RadioGroupProps extends FieldProps {
-  name: string;
   formLabel: string;
   optionArr: string[];
   defaultValue?: string;
@@ -118,8 +117,6 @@ export function RadioGroup(props: RadioGroupProps) {
       setFieldValue(field.name, defaultValue);
     }
   }, [defaultValue, field.name, field.value, setFieldValue]);
-
-  console.log(props.formLabel);
 
   return (
     <Flex direction="column" id={field.name}>
