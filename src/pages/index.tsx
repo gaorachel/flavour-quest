@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import {
   Container,
@@ -34,8 +33,9 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
+import { sendAPIReq } from "./_api";
 
-import type { Question, Choices } from "../type";
+import type { Question, Choices, ResultsRes } from "../type";
 
 export default function QuestForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,16 +61,14 @@ export default function QuestForm() {
     setModalData(sortedAnswers);
   };
 
-  const sendAPIReq = async (answers: Choices | Choices) => {
-    const res = await axios.post("/api/quest", answers);
-
+  const navigateToResultsPage = (res: ResultsRes) => {
     let timeout = 0;
     if (process.env.NODE_ENV === "development") timeout = 4000;
 
     setTimeout(() => {
       router.push({
         pathname: "/results",
-        query: { data: JSON.stringify(res.data) },
+        query: { data: JSON.stringify(res) },
       });
     }, timeout);
   };
@@ -152,9 +150,9 @@ export default function QuestForm() {
   };
 
   const handleSubmit = async (answers: Choices) => {
-    console.log(answers);
     displayAnswersOnModal(answers);
-    sendAPIReq(answers);
+    const res = await sendAPIReq(answers);
+    navigateToResultsPage(res);
   };
 
   const handleYoloBtnClick = async (questions: Question[]) => {
@@ -162,7 +160,8 @@ export default function QuestForm() {
 
     onOpen(); // show modal on the screen
     displayAnswersOnModal(answers);
-    sendAPIReq(answers);
+    const res = await sendAPIReq(answers);
+    navigateToResultsPage(res);
   };
 
   return (
