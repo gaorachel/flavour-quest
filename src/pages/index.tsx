@@ -53,10 +53,10 @@ export default function QuestForm() {
       if (Array.isArray(value)) valueText = value.join(", ");
       if (key === "cookingTime") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} mins`;
       if (key === "servingSize") valueText = `${Object.values(value)[0]} - ${Object.values(value)[1]} people`;
-      if (key === "budget") valueText = `${value.currency} ${value.value[0]} - ${value.value[1]} ${value.unit}`;
+      if (key === "budget") valueText = `${value.currency} ${value.value.min} - ${value.value.max} ${value.unit}`;
       if (key === "spicyLevels") valueText = value;
 
-      sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
+      if (value.length != 0) sortedAnswers.push(`${sortedKeyText}: ${valueText}`);
     }
     setModalData(sortedAnswers);
   };
@@ -140,7 +140,7 @@ export default function QuestForm() {
           [question.id]: {
             unit: question.options.unit[randIdx1],
             currency: question.options.currency[randIdx2],
-            value: { min: randRange[0], max: randRange[2] },
+            value: { min: randRange[0], max: randRange[1] },
           },
         };
       }
