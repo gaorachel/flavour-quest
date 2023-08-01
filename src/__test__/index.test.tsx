@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { ChakraProvider } from "@chakra-ui/react";
 import QuestForm from "../pages";
@@ -138,5 +138,23 @@ describe("Modal", () => {
     user.click(yoloButton);
     const modal = await screen.findByRole("dialog");
     expect(modal).toBeInTheDocument();
+  });
+
+  it("calls the onSubmit", async () => {
+    render(
+      <ChakraProvider>
+        <QuestForm />
+      </ChakraProvider>
+    );
+
+    const handleSubmit = jest.fn();
+
+    const veryHot = screen.getByLabelText("Very Hot");
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+
+    await user.click(veryHot);
+    await user.click(submitButton);
+
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 });
