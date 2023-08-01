@@ -62,6 +62,67 @@ describe("QuestForm", () => {
     expect(yoloButton).toBeInTheDocument();
   });
 
+  it("contains Submit button", () => {
+    render(
+      <ChakraProvider>
+        <QuestForm />
+      </ChakraProvider>
+    );
+
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    expect(submitButton).toBeInTheDocument();
+  });
+
+  it("should be able to change spicy level", async () => {
+    render(
+      <ChakraProvider>
+        <QuestForm />
+      </ChakraProvider>
+    );
+
+    const mild = screen.getByLabelText("Mild");
+    const medium = screen.getByLabelText("Medium");
+    const hot = screen.getByLabelText("Hot");
+    const veryHot = screen.getByLabelText("Very Hot");
+    const extremely = screen.getByLabelText("Extremely");
+
+    await user.click(mild);
+    expect(mild).toBeChecked();
+    expect(medium).not.toBeChecked();
+    expect(hot).not.toBeChecked();
+    expect(veryHot).not.toBeChecked();
+    expect(extremely).not.toBeChecked();
+
+    await user.click(veryHot);
+    expect(mild).not.toBeChecked();
+    expect(medium).not.toBeChecked();
+    expect(hot).not.toBeChecked();
+    expect(veryHot).toBeChecked();
+    expect(extremely).not.toBeChecked();
+  });
+
+  it("should be able to change budget currency", async () => {
+    render(
+      <ChakraProvider>
+        <QuestForm />
+      </ChakraProvider>
+    );
+
+    const gbp = screen.getByLabelText("GBP");
+    const eur = screen.getByLabelText("EUR");
+    const usd = screen.getByLabelText("USD");
+
+    await user.click(eur);
+    expect(gbp).not.toBeChecked();
+    expect(eur).toBeChecked();
+    expect(usd).not.toBeChecked();
+
+    await user.click(usd);
+    expect(usd).toBeChecked();
+    expect(eur).not.toBeChecked();
+    expect(gbp).not.toBeChecked();
+  });
+
   it(`contains all ${questionNum} questions once and only once`, () => {
     render(
       <ChakraProvider>
