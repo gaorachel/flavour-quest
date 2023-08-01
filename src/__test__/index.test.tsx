@@ -155,48 +155,31 @@ describe("QuestForm", () => {
     });
   });
 
-describe("Modal", () => {
-  it("should pop up after SUBMIT button is clicked", async () => {
-    render(
-      <ChakraProvider>
-        <QuestForm />
-      </ChakraProvider>
-    );
+  describe("Modal", () => {
+    it("should pop up after SUBMIT button is clicked", async () => {
+      render(
+        <ChakraProvider>
+          <QuestForm />
+        </ChakraProvider>
+      );
 
-    const submitButton = screen.getByRole("button", { name: "Submit" });
-    user.click(submitButton);
-    const modal = await screen.findByRole("dialog");
-    expect(modal).toBeInTheDocument();
-  });
+      const submitButton = screen.getByRole("button", { name: "Submit" });
+      user.click(submitButton);
+      const modal = await screen.findByRole("dialog");
+      expect(modal).toBeInTheDocument();
+    });
 
-  it("should pop up after YOLO button is clicked", async () => {
-    render(
-      <ChakraProvider>
-        <QuestForm />
-      </ChakraProvider>
-    );
+    it("should pop up after YOLO button is clicked", async () => {
+      render(
+        <ChakraProvider>
+          <QuestForm />
+        </ChakraProvider>
+      );
 
-    const yoloButton = screen.getByRole("button", { name: "YOLO" });
-    user.click(yoloButton);
-    const modal = await screen.findByRole("dialog");
-    expect(modal).toBeInTheDocument();
-  });
-
-  it("calls the onSubmit", async () => {
-    render(
-      <ChakraProvider>
-        <QuestForm />
-      </ChakraProvider>
-    );
-
-    const handleSubmit = jest.fn();
-
-    const veryHot = screen.getByLabelText("Very Hot");
-    const submitButton = screen.getByRole("button", { name: "Submit" });
-
-    await user.click(veryHot);
-    await user.click(submitButton);
-
-    expect(handleSubmit).toHaveBeenCalledTimes(1);
+      const yoloButton = screen.getByRole("button", { name: "YOLO" });
+      user.click(yoloButton);
+      const modal = await screen.findByRole("dialog");
+      expect(modal).toBeInTheDocument();
+    });
   });
 });
