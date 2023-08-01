@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
+import selectEvent from "react-select-event";
 import { ChakraProvider } from "@chakra-ui/react";
 import QuestForm from "../pages";
 import { questions } from "@/data/questions";
+import axios from "axios";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
@@ -111,7 +113,47 @@ describe("QuestForm", () => {
       expect(label.length).toBe(1);
     });
   });
-});
+
+  it("submits correct form answers", async () => {
+    render(
+      <ChakraProvider>
+        <QuestForm />
+      </ChakraProvider>
+    );
+
+    const spy = jest.spyOn(axios, "post");
+
+    await selectEvent.select(screen.getByLabelText("What are your preferred cuisines?"), ["Chinese", "Turkish"]);
+    await selectEvent.select(screen.getByLabelText("What are your preferred flavours?"), ["Sweet"]);
+    await selectEvent.select(screen.getByLabelText("Do you have any specific goals related to your meals?"), [
+      "More protein",
+      "Low carb",
+    ]);
+
+    const veryHot = screen.getByLabelText("Very Hot");
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+
+    await user.click(veryHot);
+    await user.click(submitButton);
+
+    expect(spy).toHaveBeenCalledWith("/api/quest", {
+      budget: { currency: "GBP", unit: "per person", value: { max: 50, min: 15 } },
+      cookingFacilities: [],
+      cookingTime: { max: 60, min: 15 },
+      dietaryRestrictions: [],
+      mealtime: [],
+      preferredCuisines: ["Chinese", "Turkish"],
+      preferredFlavours: ["Sweet"],
+      preferredIngredients: [],
+      preferredMaterials: [],
+      preferredStyle: [],
+      servingSize: { max: 3, min: 1 },
+      specificCookingTechniques: [],
+      specificGoals: ["More protein", "Low carb"],
+      specificTextures: [],
+      spicyLevels: "Very Hot",
+    });
+  });
 
 describe("Modal", () => {
   it("should pop up after SUBMIT button is clicked", async () => {
