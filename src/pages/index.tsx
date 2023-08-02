@@ -181,7 +181,6 @@ export default function QuestForm() {
           cookingTime: { min: 15, max: 60 },
           cookingFacilities: [],
           specificCookingTechniques: [],
-          specificTextures: [],
           budget: {
             unit: "per person",
             currency: "GBP",

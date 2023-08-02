@@ -150,7 +150,6 @@ describe("QuestForm", () => {
       servingSize: { max: 3, min: 1 },
       specificCookingTechniques: [],
       specificGoals: ["More protein", "Low carb"],
-      specificTextures: [],
       spicyLevels: "Very Hot",
     });
   });
