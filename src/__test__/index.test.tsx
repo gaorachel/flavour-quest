@@ -125,9 +125,20 @@ describe("QuestForm", () => {
 
     await selectEvent.select(screen.getByLabelText("What are your preferred cuisines?"), ["Chinese", "Turkish"]);
     await selectEvent.select(screen.getByLabelText("What are your preferred flavours?"), ["Sweet"]);
+    await selectEvent.select(screen.getByLabelText("What are your preferred styles?"), ["Meat or Poultry"]);
+    await selectEvent.select(screen.getByLabelText("What are your preferred materials?"), ["Potato"]);
+    await selectEvent.select(screen.getByLabelText("What are your preferred ingredients?"), ["Parsley"]);
+    await selectEvent.select(screen.getByLabelText("Do you have any dietary restrictions or allergies?"), [
+      "Coriander",
+    ]);
     await selectEvent.select(screen.getByLabelText("Do you have any specific goals related to your meals?"), [
       "More protein",
       "Low carb",
+    ]);
+    await selectEvent.select(screen.getByLabelText("What are your preferred meal time?"), ["Dinner"]);
+    await selectEvent.select(screen.getByLabelText("What cooking facilities do you have available?"), ["Oven"]);
+    await selectEvent.select(screen.getByLabelText("Are there any specific cooking techniques you enjoy or prefer?"), [
+      "Stir-frying",
     ]);
 
     const veryHot = screen.getByLabelText("Very Hot");
@@ -138,17 +149,17 @@ describe("QuestForm", () => {
 
     expect(spy).toHaveBeenCalledWith("/api/quest", {
       budget: { currency: "GBP", unit: "per person", value: { max: 50, min: 15 } },
-      cookingFacilities: [],
+      cookingFacilities: ["Oven"],
       cookingTime: { max: 60, min: 15 },
-      dietaryRestrictions: [],
-      mealtime: [],
+      dietaryRestrictions: ["Coriander"],
+      mealtime: ["Dinner"],
       preferredCuisines: ["Chinese", "Turkish"],
       preferredFlavours: ["Sweet"],
-      preferredIngredients: [],
-      preferredMaterials: [],
-      preferredStyle: [],
+      preferredIngredients: ["Parsley"],
+      preferredMaterials: ["Potato"],
+      preferredStyle: ["Meat or Poultry"],
       servingSize: { max: 3, min: 1 },
-      specificCookingTechniques: [],
+      specificCookingTechniques: ["Stir-frying"],
       specificGoals: ["More protein", "Low carb"],
       spicyLevels: "Very Hot",
     });
