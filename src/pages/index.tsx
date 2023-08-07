@@ -33,7 +33,7 @@ import { MultiSelect } from "../components/MultiSelect";
 import { RangeSliderWithIndexValue } from "../components/RangeSliderWithIndexValue";
 import { RadioGroup } from "../components/RadioGroup";
 import { NumInput } from "../components/NumInput";
-import { sendAPIReq } from "./_api";
+import sendAPIReq from "../services/sendAPIReq";
 
 import type { Question, Choices, ResultsRes } from "../type";
 
