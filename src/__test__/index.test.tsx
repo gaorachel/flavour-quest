@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import selectEvent from "react-select-event";
 import { ChakraProvider } from "@chakra-ui/react";
-import QuestForm from "../pages";
+import QuestForm from "@/pages";
 import { questions } from "@/data/questions";
 import axios from "axios";
 
