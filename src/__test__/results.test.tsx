@@ -41,18 +41,18 @@ jest.mock("next/router", () => ({
 }));
 
 describe("Results", () => {
-  it("should have a recipe name as heading", async () => {
+  it("should show a recipe name as h2", async () => {
     render(
       <ChakraProvider>
         <Results />
       </ChakraProvider>
     );
 
-    const recipeName = screen.getByRole("heading", { name: "Lemon Garlic Roasted Chicken" });
+    const recipeName = screen.getByRole("heading", { name: "Lemon Garlic Roasted Chicken", level: 2 });
     expect(recipeName).toBeInTheDocument();
   });
 
-  it("should have a food image", async () => {
+  it("should show a food image", async () => {
     render(
       <ChakraProvider>
         <Results />
@@ -61,5 +61,132 @@ describe("Results", () => {
 
     const foodImg = await screen.findByAltText("Food Image");
     expect(foodImg).toBeInTheDocument();
+  });
+
+  describe("Ingredients", () => {
+    it("should display as h2", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const ingredients = screen.getByRole("heading", { name: "Ingredients", level: 2 });
+      expect(ingredients).toBeInTheDocument();
+    });
+
+    it("should show 7 bullet points", () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const bulletPoints = screen.getAllByRole("presentation");
+      expect(bulletPoints.length).toBe(7);
+    });
+  });
+
+  describe("Instructions", () => {
+    it("should display as h2", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const instructions = screen.getByRole("heading", { name: "Instructions", level: 2 });
+      expect(instructions).toBeInTheDocument();
+    });
+
+    it("should show 10 lists", () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const lists = screen.getAllByTestId("instructions-listitem");
+      expect(lists.length).toBe(10);
+    });
+  });
+
+  describe("Info Table", () => {
+    it("should show INFO as table column head", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const info = screen.getByRole("columnheader", { name: "INFO" });
+      expect(info).toBeInTheDocument();
+    });
+
+    it("should show table row", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const perMeal = screen.getByRole("columnheader", { name: "PER MEAL" });
+      expect(perMeal).toBeInTheDocument();
+    });
+
+    it("should show Preparing Time as table cell", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const preparingTime = screen.getByRole("cell", { name: "Preparing Time" });
+      expect(preparingTime).toBeInTheDocument();
+    });
+
+    it("should show 15 as Preparing Time value", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const preparingTime = screen.getByRole("cell", { name: "15" });
+      expect(preparingTime).toBeInTheDocument();
+    });
+
+    it("should show Cooking Time as table cell", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const cookingTime = screen.getByRole("cell", { name: "Cooking Time" });
+      expect(cookingTime).toBeInTheDocument();
+    });
+
+    it("should show 50 as Cooking Time value", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const cookingTime = screen.getByRole("cell", { name: "50" });
+      expect(cookingTime).toBeInTheDocument();
+    });
+
+    it("should show Servings row", async () => {
+      render(
+        <ChakraProvider>
+          <Results />
+        </ChakraProvider>
+      );
+
+      const servings = screen.getByRole("row", { name: "Servings 4" });
+      expect(servings).toBeInTheDocument();
+    });
   });
 });
