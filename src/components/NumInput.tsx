@@ -50,8 +50,8 @@ export function NumInput(props: NumInputProps) {
           <Flex align="center" gap={5}>
             <Box fontSize="md">Min No.</Box>
             <NumberInput
-              id={`${name}-min`}
-              name={`${name}.min`}
+              id={`${field.name}-min`}
+              name={`${field.name}.min`}
               value={valueMin}
               defaultValue={defaultValue[0]}
               min={valueRange[0]}
@@ -71,8 +71,8 @@ export function NumInput(props: NumInputProps) {
           <Flex align="center" gap={5}>
             <Box fontSize="md">Max No.</Box>
             <NumberInput
-              id={`${name}-max`}
-              name={`${name}.max`}
+              id={`${field.name}-max`}
+              name={`${field.name}.max`}
               value={valueMax}
               defaultValue={defaultValue[1]}
               min={valueMin}

@@ -105,7 +105,9 @@ export default function Results() {
               <List paddingY={2} paddingX={4}>
                 <OrderedList>
                   {results.instructions.map((el: string, i: number) => (
-                    <ListItem key={i}>{el}</ListItem>
+                    <ListItem key={i} data-testid="instructions-listitem">
+                      {el}
+                    </ListItem>
                   ))}
                 </OrderedList>
               </List>
