@@ -22,6 +22,7 @@
 - ChatGPT (OpenAI)
 - Google Search API (for images)
 - Chakra UI
+- Jest, React Testing Library
   
 ## Preview
 <img width="1500" alt="form-questions" src="https://github.com/gaorachel/flavour-quest/assets/65629022/d7493353-e728-4017-9558-685be13fbdf4">
