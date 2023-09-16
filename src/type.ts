@@ -72,7 +72,7 @@ export interface ResultsRes {
   img: string;
 }
 
-export interface Format {
+export interface RecipeRes {
   recipeName: string;
   cuisineType: string;
   servings: number;
