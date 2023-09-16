@@ -2,7 +2,11 @@ import { Configuration, OpenAIApi } from "openai";
 
 import type { Choices, Format } from "@/type";
 
-export async function askGPT(data: Choices, format: Format) {
+async function timer(seconds: number) {
+  await new Promise((_resolve, reject: any) => setTimeout(() => reject("took too long"), seconds));
+}
+
+async function longJob(data: Choices, format: Format) {
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -21,4 +25,8 @@ export async function askGPT(data: Choices, format: Format) {
   });
 
   return JSON.parse(completion.data.choices[0].message?.content as string);
+}
+
+export function askGPT(data: Choices, format: Format) {
+  return Promise.race([longJob(data, format), timer(10000)]);
 }
